@@ -1,0 +1,32 @@
+.saldo-card{
+     background-color: #847a7a;
+    border-radius: 16px;
+    padding: 24px;
+    max-width: 350px;
+    width: 100%;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    border: 1px solid #eef2f6;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+.saldo-header{
+    display:flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: bottle 12px;
+}
+
+.saldo-title{
+    font-family:Georgia, 'Times New Roman', Times, serif;
+    font-size: large;
+}
+
+.saldo-value{
+    font-size:30px;
+    justify-content: space-between;
+    align-items:center;
+}
+
+.saldo-icon{
+    font-size:60px;;
+}
