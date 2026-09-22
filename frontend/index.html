@@ -7,7 +7,8 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="saldo-card"> 
+<div class="cards"> 
+    <div class="card saldo-card"> 
         <div class="saldo-header">
             <span class="saldo-title">Saldo Disponível</span>
             <span class="saldo-icon">💰</span>
@@ -18,7 +19,7 @@
         </div>
     </div>  
 
-    <div class="entrada-card"> 
+    <div class="card entrada-card"> 
         <div class="entrada-header">
             <span class="entrada-title">Entradas</span>
             <span class="entrada-icon">➕</span>
@@ -27,12 +28,12 @@
 
         <div class="entrada-body">
             <label for="valor-entrada">Digite quanto deseja adicionar</label>
-            <input type="number" placeholder="R$ 0,00">
+            <input type="number" id="valor-entrada" placeholder="R$ 0,00">
             <button class="entrada-button">Adicionar</button>
         </div>
     </div>  
 
-    <div class="saida-card"> 
+    <div class="card saida-card"> 
         <div class="saida-header">
             <span class="saida-title">Saídas</span>
             <span class="saida-icon">➖</span>
@@ -40,12 +41,12 @@
 
         <div class="saida-body">
             <label for="valor-saida">Digite quanto deseja retirar</label>
-            <input type="number" placeholder="R$ 0,00">
+            <input type="number" id="valor-saida" placeholder="R$ 0,00">
             <button class="saida-button">Retirar</button>
         </div>
     </div>  
 
-    <div class="previsao-card"> 
+    <div class="card previsao-card"> 
         <div class="previsao-header">
             <span class="previsao-title">Previsão de Saldo</span>
             <span class="previsao-icon">📊</span>
@@ -56,6 +57,7 @@
             <h2 class="previsao-value">R$ 1000,00</h2>
         </div>
     </div>  
+</div>  
 
 </body>
 </html>
