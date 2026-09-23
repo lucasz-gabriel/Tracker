@@ -111,3 +111,42 @@ body{
 .previsao-icon{
   font-size:35px;
 }
+
+.transacoes {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 24px;
+    color: #ffffff;
+
+    h3 {
+        font-family: Georgia, 'Times New Roman', Times, serif;
+        margin-bottom: 12px;
+    }
+}
+
+#lista-transacoes {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    background-color: rgba(56, 9, 87, 0.945);
+    border-radius: 16px;
+    border: 1px solid #0f0f0f;
+
+    li {
+        padding: 12px 20px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        font-size: 16px;
+
+        &:last-child {
+            border-bottom: none;
+        }
+
+        &.entrada {
+            color: #4ade80;
+        }
+
+        &.saida {
+            color: #f87171;
+        }
+    }
+}

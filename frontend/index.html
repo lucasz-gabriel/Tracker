@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tracker</title>
     <link rel="stylesheet" href="style.css">
+    <script src="script.js" defer></script>
 </head>
 <body>
 <div class="cards"> 
@@ -15,7 +16,7 @@
         </div>
 
         <div class="saldo-body">
-            <h2 class="saldo-value">R$ 1000,00</h2>
+            <h2 class="saldo-value" id="saldo">R$ 1000,00</h2>
         </div>
     </div>  
 
@@ -29,7 +30,7 @@
         <div class="entrada-body">
             <label for="valor-entrada">Digite quanto deseja adicionar</label>
             <input type="number" id="valor-entrada" placeholder="R$ 0,00">
-            <button class="entrada-button">Adicionar</button>
+            <button class="entrada-button" id="btn-entrada">Adicionar</button>
         </div>
     </div>  
 
@@ -42,7 +43,7 @@
         <div class="saida-body">
             <label for="valor-saida">Digite quanto deseja retirar</label>
             <input type="number" id="valor-saida" placeholder="R$ 0,00">
-            <button class="saida-button">Retirar</button>
+            <button class="saida-button" id="btn-saida">Retirar</button>
         </div>
     </div>  
 
@@ -54,10 +55,15 @@
 
         <div class="previsao-body">
             <h2> Valor previsto </h2>
-            <h2 class="previsao-value">R$ 1000,00</h2>
+            <h2 class="previsao-value" id="previsao">R$ 1000,00</h2>
         </div>
     </div>  
 </div>  
+
+    <div class="transacoes">
+        <h3>Últimas transações</h3>
+        <ul id="lista-transacoes"></ul>
+    </div>
 
 </body>
 </html>
