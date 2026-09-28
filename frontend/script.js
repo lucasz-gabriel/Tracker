@@ -1,8 +1,35 @@
 let saldo = 1000;
+let totalEntradas = 0;
+let totalSaidas = 0;
 
 const saldoTexto = document.getElementById("saldo");
 const previsaoTexto = document.getElementById("previsao");
 const listaTransacoes = document.getElementById("lista-transacoes");
+
+const ctx = document.getElementById("grafico-rosca");
+const grafico = new Chart(ctx, {
+    type: "doughnut",
+    data: {
+        labels: ["Entradas", "Saídas"],
+        datasets: [{
+            data: [totalEntradas, totalSaidas],
+            backgroundColor: ["#4ade80", "#f87171"],
+            borderWidth: 0
+        }]
+    },
+    options: {
+        plugins: {
+            legend: {
+                labels: { color: "#ffffff" }
+            }
+        }
+    }
+});
+
+function atualizarGrafico() {
+    grafico.data.datasets[0].data = [totalEntradas, totalSaidas];
+    grafico.update();
+}
 
 function formatarMoeda(valor) {
     return "R$ " + valor.toFixed(2).replace(".", ",");
@@ -31,6 +58,8 @@ document.getElementById("btn-entrada").addEventListener("click", function() {
     }
 
     saldo += valor;
+    totalEntradas += valor;
+    atualizarGrafico()
     adicionarTransacao("Entrada", valor, "entrada");
     atualizarTela();
     input.value = "";
@@ -46,7 +75,10 @@ document.getElementById("btn-saida").addEventListener("click", function() {
     }
 
     saldo -= valor;
+    totalSaidas += valor;
+    atualizarGrafico()
     adicionarTransacao("Saída", valor, "saida");
     atualizarTela();
     input.value = "";
 });
+

@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tracker</title>
     <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="script.js" defer></script>
 </head>
 <body>
@@ -58,12 +59,17 @@
             <h2 class="previsao-value" id="previsao">R$ 1000,00</h2>
         </div>
     </div>  
-</div>  
+</div> 
 
-    <div class="transacoes">
-        <h3>Últimas transações</h3>
-        <ul id="lista-transacoes"></ul>
-    </div>
+<div class="grafico-card">
+    <h3>Entradas vs Saídas</h3>
+    <canvas id="grafico-rosca"></canvas>
+</div>
+
+<div class="transacoes">
+    <h3>Últimas transações</h3>
+    <ul id="lista-transacoes"></ul>
+</div>
 
 </body>
 </html>
