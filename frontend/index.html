@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tracker</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="script.js" defer></script>
+</head>
+<body>
+<div class="cards"> 
+    <div class="card saldo-card"> 
+        <div class="saldo-header">
+            <span class="saldo-title">Saldo Disponível</span>
+            <span class="saldo-icon">💰</span>
+        </div>
+
+        <div class="saldo-body">
+            <h2 class="saldo-value" id="saldo">R$ 1000,00</h2>
+        </div>
+    </div>  
+
+    <div class="card entrada-card"> 
+        <div class="entrada-header">
+            <span class="entrada-title">Entradas</span>
+            <span class="entrada-icon">➕</span>
+        </div>
+    
+
+        <div class="entrada-body">
+            <label for="valor-entrada">Digite quanto deseja adicionar</label>
+            <input type="number" id="valor-entrada" placeholder="R$ 0,00">
+            <button class="entrada-button" id="btn-entrada">Adicionar</button>
+        </div>
+    </div>  
+
+    <div class="card saida-card"> 
+        <div class="saida-header">
+            <span class="saida-title">Saídas</span>
+            <span class="saida-icon">➖</span>
+        </div>
+
+        <div class="saida-body">
+            <label for="valor-saida">Digite quanto deseja retirar</label>
+            <input type="number" id="valor-saida" placeholder="R$ 0,00">
+            <button class="saida-button" id="btn-saida">Retirar</button>
+        </div>
+    </div>  
+
+    <div class="card previsao-card"> 
+        <div class="previsao-header">
+            <span class="previsao-title">Previsão de Saldo</span>
+            <span class="previsao-icon">📊</span>
+        </div>
+
+        <div class="previsao-body">
+            <h2> Valor previsto </h2>
+            <h2 class="previsao-value" id="previsao">R$ 1000,00</h2>
+        </div>
+    </div>  
+</div> 
+
+<div class="grafico-card">
+    <h3>Entradas vs Saídas</h3>
+    <canvas id="grafico-rosca"></canvas>
+</div>
+
+<div class="transacoes">
+    <h3>Últimas transações</h3>
+    <ul id="lista-transacoes"></ul>
+</div>
+
+</body>
+</html>
