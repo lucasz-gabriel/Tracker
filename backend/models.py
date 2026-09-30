@@ -7,7 +7,7 @@ class Categoria(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     nome = Column(String, nullable=False)
-    tipo = Column(String, nullable=False)  # "entrada" ou "saida"
+    tipo = Column(String, nullable=False) 
 
     transacoes = relationship("Transacao", back_populates="categoria")
     assinaturas = relationship("Assinatura", back_populates="categoria")
@@ -19,7 +19,7 @@ class Transacao(Base):
     id = Column(Integer, primary_key=True, index=True)
     descricao = Column(String, nullable=False)
     valor_centavos = Column(Integer, nullable=False)
-    tipo = Column(String, nullable=False)  # "entrada" ou "saida"
+    tipo = Column(String, nullable=False) 
     data = Column(Date, nullable=False)
     categoria_id = Column(Integer, ForeignKey("categorias.id"))
 
