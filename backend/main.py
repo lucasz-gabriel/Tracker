@@ -8,16 +8,24 @@ Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
 
+from fastapi.middleware.cors import CORSMiddleware
+
+app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 def get_db():
     db = SessionLocal()
     try:
         yield db
     finally:
         db.close()
-
-@app.get("/")
-def home():
-    return {"mensagem": "Tracker API rodando"}
 
 #Área das transações de entrada e saída
 @app.get("/transacoes", response_model=list[schemas.Transacao])
