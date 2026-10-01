@@ -29,8 +29,17 @@
     
 
         <div class="entrada-body">
+
+            <label for="descricao-entrada">O que é?</label>
+            <input type="text" id="descricao-entrada" placeholder="Ex: Salário, Venda, etc.">
+
             <label for="valor-entrada">Digite quanto deseja adicionar</label>
             <input type="number" id="valor-entrada" placeholder="R$ 0,00">
+
+            <label for="categoria-entrada">Categoria</label>
+            <select id="categoria-entrada">
+                <option value="">Sem categoria</option>
+            </select>   
             <button class="entrada-button" id="btn-entrada">Adicionar</button>
         </div>
     </div>  
@@ -42,8 +51,17 @@
         </div>
 
         <div class="saida-body">
+
+            <label for="descricao-saida">O que é?</label>
+            <input type="text" id="descricao-saida" placeholder="Ex: Salário, Venda, etc.">
+
             <label for="valor-saida">Digite quanto deseja retirar</label>
             <input type="number" id="valor-saida" placeholder="R$ 0,00">
+
+             <label for="categoria-saida">Categoria</label>
+            <select id="categoria-saida">
+                <option value="">Sem categoria</option>
+            </select>   
             <button class="saida-button" id="btn-saida">Retirar</button>
         </div>
     </div>  

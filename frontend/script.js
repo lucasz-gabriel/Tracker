@@ -65,7 +65,7 @@ async function carregarTransacoes() {
     atualizarGrafico();
 }
 
-async function criarTransacao(descricao, valorCentavos, tipo) {
+async function criarTransacao(descricao, valorCentavos, tipo, categoriaID) {
     await fetch(API_URL + "/transacoes", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -74,16 +74,42 @@ async function criarTransacao(descricao, valorCentavos, tipo) {
             valor_centavos: valorCentavos,
             tipo: tipo,
             data: new Date().toISOString().split("T")[0],
-            categoria_id: null
+            categoria_id: categoriaID || null
         })
     });
 
     await carregarTransacoes();
 }
 
+async function carregarCategorias() {
+    const resposta = await fetch(API_URL + "/categorias");
+    const categorias = await resposta.json();
+
+    const selectEntrada = document.getElementById("categoria-entrada");
+    const selectSaida = document.getElementById("categoria-saida");
+
+    categorias.forEach(function(categoria) {
+        const opcaoEntrada = document.createElement("option");
+        opcaoEntrada.value = categoria.id;
+        opcaoEntrada.textContent = categoria.nome;
+        selectEntrada.appendChild(opcaoEntrada);
+
+        const opcaoSaida = document.createElement("option");
+        opcaoSaida.value = categoria.id;
+        opcaoSaida.textContent = categoria.nome;
+        selectSaida.appendChild(opcaoSaida);
+    });
+}
+
+
+// Event listeners dos botões de entrada e saída
 document.getElementById("btn-entrada").addEventListener("click", async function() {
+    const inputDescricao = document.getElementById("descricao-entrada");
     const input = document.getElementById("valor-entrada");
-    const valor = Number(input.value);
+    const categoriaID = document.getElementById("categoria-entrada").value;
+
+    const valor = Number(input.value); 
+    const descricao = inputDescricao.value.trim() || "Entrada";
 
     if (!valor || valor <= 0) {
         alert("Digite um valor válido");
@@ -91,13 +117,18 @@ document.getElementById("btn-entrada").addEventListener("click", async function(
     }
 
     const valorCentavos = Math.round(valor * 100);
-    await criarTransacao("Entrada", valorCentavos, "entrada");
+    await criarTransacao(descricao, valorCentavos, "entrada", categoriaID);
     input.value = "";
+    inputDescricao.value = "";
 });
 
 document.getElementById("btn-saida").addEventListener("click", async function() {
+    const inputDescricao = document.getElementById("descricao-saida");
     const input = document.getElementById("valor-saida");
+    const categoriaID = document.getElementById("categoria-saida").value;
+
     const valor = Number(input.value);
+    const descricao = inputDescricao.value.trim() || "Saída";
 
     if (!valor || valor <= 0) {
         alert("Digite um valor válido");
@@ -105,8 +136,10 @@ document.getElementById("btn-saida").addEventListener("click", async function() 
     }
 
     const valorCentavos = Math.round(valor * 100);
-    await criarTransacao("Saída", valorCentavos, "saida");
+    await criarTransacao(descricao, valorCentavos, "saida", categoriaID);
     input.value = "";
+    inputDescricao.value = "";
 });
 
 carregarTransacoes();
+carregarCategorias();
