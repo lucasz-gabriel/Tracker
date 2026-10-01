@@ -25,7 +25,7 @@ class Transacao(Base):
 
     categoria = relationship("Categoria", back_populates="transacoes")
 
-
+    
 class Assinatura(Base):
     __tablename__ = "assinaturas"
 
