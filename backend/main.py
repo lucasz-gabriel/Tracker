@@ -19,6 +19,7 @@ def get_db():
 def home():
     return {"mensagem": "Tracker API rodando"}
 
+#Área das transações de entrada e saída
 @app.get("/transacoes", response_model=list[schemas.Transacao])
 def listar_transacoes(db: Session = Depends(get_db)):
     return db.query(models.Transacao).all()
@@ -40,6 +41,7 @@ def deletar_transacao(transacao_id: int, db: Session = Depends(get_db)):
     db.commit()
     return {"mensagem": "Transação deletada"}
 
+#Área das categorias
 @app.get("/categorias", response_model=list[schemas.Categoria])
 def listar_categorias(db: Session = Depends(get_db)):
     return db.query(models.Categoria).all()
@@ -61,3 +63,24 @@ def deletar_categoria(categoria_id: int, db: Session = Depends(get_db)):
     db.commit()
     return {"mensagem": "Categoria deletada"}
 
+#Área das Assinaturas
+@app.get("/assinaturas", response_model=list[schemas.Assinatura])
+def listar_assinaturas(db: Session = Depends(get_db)):
+    return db.query(models.Assinatura).all()
+
+@app.post("/assinaturas", response_model=schemas.Assinatura)
+def criar_assinatura(assinatura: schemas.AssinaturaCreate, db: Session = Depends(get_db)):
+    nova = models.Assinatura(**assinatura.model_dump())
+    db.add(nova)
+    db.commit()
+    db.refresh(nova)
+    return nova
+
+@app.delete("/assinaturas/{assinatura_id}")
+def deletar_assinatura(assinatura_id: int, db: Session = Depends(get_db)):
+    assinatura = db.query(models.Assinatura).filter(models.Assinatura.id == assinatura_id).first()
+    if not assinatura:
+        raise HTTPException(status_code=404, detail="Assinatura não encontrada")
+    db.delete(assinatura)
+    db.commit()
+    return {"mensagem": "Assinatura deletada"}

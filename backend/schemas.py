@@ -23,6 +23,21 @@ class Categoria(CategoriaBase):
     class Config:
         from_attributes = True
 
+class AssinaturaBase(BaseModel):
+    nome: str
+    valor_centavos: int
+    dia_vencimento: int
+    ativa: bool = True
+    categoria_id: Optional[int] = None
+
+class AssinaturaCreate(AssinaturaBase):
+    pass
+
+class Assinatura(AssinaturaBase):
+    id: int
+
+    class Config:
+        from_attributes = True
 
 class TransacaoCreate(TransacaoBase):
     pass
