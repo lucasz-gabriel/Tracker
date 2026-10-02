@@ -9,85 +9,111 @@
     <script src="script.js" defer></script>
 </head>
 <body>
-<div class="cards"> 
-    <div class="card saldo-card"> 
-        <div class="saldo-header">
-            <span class="saldo-title">Saldo Disponível</span>
-            <span class="saldo-icon">💰</span>
+    <div class="cards">
+        <div class="card saldo-card">
+            <div class="saldo-header">
+                <span class="saldo-title">Saldo Disponível</span>
+            </div>
+            <div class="saldo-body">
+                <h2 class="saldo-value" id="saldo">R$ 1000,00</h2>
+            </div>
         </div>
 
-        <div class="saldo-body">
-            <h2 class="saldo-value" id="saldo">R$ 1000,00</h2>
-        </div>
-    </div>  
-
-    <div class="card entrada-card"> 
-        <div class="entrada-header">
-            <span class="entrada-title">Entradas</span>
-            <span class="entrada-icon">➕</span>
-        </div>
-    
-
-        <div class="entrada-body">
-
-            <label for="descricao-entrada">O que é?</label>
-            <input type="text" id="descricao-entrada" placeholder="Ex: Salário, Venda, etc.">
-
-            <label for="valor-entrada">Digite quanto deseja adicionar</label>
-            <input type="number" id="valor-entrada" placeholder="R$ 0,00">
-
-            <label for="categoria-entrada">Categoria</label>
-            <select id="categoria-entrada">
-                <option value="">Sem categoria</option>
-            </select>   
-            <button class="entrada-button" id="btn-entrada">Adicionar</button>
-        </div>
-    </div>  
-
-    <div class="card saida-card"> 
-        <div class="saida-header">
-            <span class="saida-title">Saídas</span>
-            <span class="saida-icon">➖</span>
+        <div class="card entrada-resumo-card">
+            <div class="saldo-header">
+                <span class="saldo-title">Entradas</span>
+            </div>
+            <div class="saldo-body">
+                <h2 class="saldo-value" id="total-entradas">R$ 0,00</h2>
+            </div>
         </div>
 
-        <div class="saida-body">
-
-            <label for="descricao-saida">O que é?</label>
-            <input type="text" id="descricao-saida" placeholder="Ex: Salário, Venda, etc.">
-
-            <label for="valor-saida">Digite quanto deseja retirar</label>
-            <input type="number" id="valor-saida" placeholder="R$ 0,00">
-
-             <label for="categoria-saida">Categoria</label>
-            <select id="categoria-saida">
-                <option value="">Sem categoria</option>
-            </select>   
-            <button class="saida-button" id="btn-saida">Retirar</button>
-        </div>
-    </div>  
-
-    <div class="card previsao-card"> 
-        <div class="previsao-header">
-            <span class="previsao-title">Previsão de Saldo</span>
-            <span class="previsao-icon">📊</span>
+        <div class="card saida-resumo-card">
+            <div class="saldo-header">
+                <span class="saldo-title">Saídas</span>
+            </div>
+            <div class="saldo-body">
+                <h2 class="saldo-value" id="total-saidas">R$ 0,00</h2>
+            </div>
         </div>
 
-        <div class="previsao-body">
-            <h2> Valor previsto </h2>
-            <h2 class="previsao-value" id="previsao">R$ 1000,00</h2>
+        <div class="card previsao-card">
+            <div class="previsao-header">
+                <span class="previsao-title">Previsão de Saldo</span>
+            </div>
+            <div class="previsao-body">
+                <h2 class="previsao-value" id="previsao">R$ 1000,00</h2>
+            </div>
         </div>
-    </div>  
-</div> 
+    </div>
 
-<div class="grafico-card">
-    <h3>Entradas vs Saídas</h3>
-    <canvas id="grafico-rosca"></canvas>
+    <div class="lancamentos">
+        <div class="card entrada-card">
+            <div class="entrada-header">
+                <span class="entrada-title">Nova entrada</span>
+            </div>
+            <div class="entrada-body">
+                <label for="descricao-entrada">O que é?</label>
+                <input type="text" id="descricao-entrada" placeholder="Ex: Salário, Venda, etc.">
+
+                <label for="valor-entrada">Quanto quer adicionar?   </label>
+                <input type="number" id="valor-entrada" placeholder="R$ 0,00">
+
+                <label for="categoria-entrada">Categoria</label>
+                <select id="categoria-entrada">
+                    <option value="">Sem categoria</option>
+                </select>
+
+                <button class="entrada-button" id="btn-entrada">Adicionar</button>
+            </div>
+        </div>
+
+        <div class="card saida-card">
+            <div class="saida-header">
+                <span class="saida-title">Nova saída</span>
+            </div>
+            <div class="saida-body">
+                <label for="descricao-saida">O que é?</label>
+                <input type="text" id="descricao-saida" placeholder="Ex: Mercado, Serviço, etc.">
+
+                <label for="valor-saida">Quanto quer retirar?</label>
+                <input type="number" id="valor-saida" placeholder="R$ 0,00">
+
+                <label for="categoria-saida">Categoria</label>
+                <select id="categoria-saida">
+                    <option value="">Sem categoria</option>
+                </select>
+
+                <button class="saida-button" id="btn-saida">Retirar</button>
+            </div>
+        </div>
+    </div>
+
+<div class="secao-grafico-assinaturas">
+    <div class="grafico-card">
+        <canvas id="grafico-rosca" width="380" height="380"></canvas>
+    </div>
+
+    <div class="card assinaturas-card">
+        <div class="assinaturas-header">
+            <span class="assinaturas-title">Assinaturas</span>
+        </div>
+
+        <div class="assinaturas-body">
+            <ul id="lista-assinaturas"></ul>
+            <div class="nova-assinatura">
+                <input type="text" id="nome-assinatura" placeholder="Nome (ex: Netflix)">
+                <input type="number" id="valor-assinatura" placeholder="R$ 0,00">
+                <input type="number" id="dia-assinatura" placeholder="Dia (1-31)" min="1" max="31">
+                <button id="btn-assinatura">+ Adicionar assinatura</button>
+            </div>
+        </div>
+    </div>
 </div>
 
-<div class="transacoes">
-    <h3>Últimas transações</h3>
-    <ul id="lista-transacoes"></ul>
-</div>
-
+    <div class="transacoes">
+        <h3>Últimas transações</h3>
+        <ul id="lista-transacoes"></ul>
+    </div>
 </body>
 </html>

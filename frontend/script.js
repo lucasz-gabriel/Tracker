@@ -14,13 +14,14 @@ const grafico = new Chart(ctx, {
         labels: ["Entradas", "Saídas"],
         datasets: [{
             data: [0, 0],
-            backgroundColor: ["#4ade80", "#f87171"],
+            backgroundColor: ["#22c55e", "#dc2626"],
             borderWidth: 0
         }]
     },
     options: {
+        responsive: false,
         plugins: {
-            legend: { labels: { color: "#ffffff" } }
+            legend: { labels: { color: "#ffffff" } } 
         }
     }
 });
@@ -63,6 +64,9 @@ async function carregarTransacoes() {
     saldoTexto.textContent = formatarMoeda(saldo);
     previsaoTexto.textContent = formatarMoeda(saldo);
     atualizarGrafico();
+
+    document.getElementById("total-entradas").textContent = formatarMoeda(totalEntradas);
+    document.getElementById("total-saidas").textContent = formatarMoeda(totalSaidas);
 }
 
 async function criarTransacao(descricao, valorCentavos, tipo, categoriaID) {

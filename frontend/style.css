@@ -1,9 +1,14 @@
-body{
-    background-color: rgba(29, 6, 44, 0.945);
-    margin: 0;
-    padding: 0;
+body {
+    background: linear-gradient(270deg, #1d062c, #4f0883, #2b0640, #1d062c);
+    background-size: 400% 400%;
+    animation: gradienteAnimado 15s ease infinite;
 }
 
+@keyframes gradienteAnimado {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
 .cards{
     display: grid;
     grid-template-columns: repeat(4, 1fr);
@@ -14,7 +19,7 @@ body{
 }
 
 .card{
-   background-color: #6b0385;
+   background-color: #3b0249;
     border-radius: 16px;
     padding: 24px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
@@ -39,9 +44,6 @@ body{
     align-items:center;
     color:rgb(158, 162, 167)
 }
-.saldo-icon{
-    font-size:60px;;
-}
 
 .entrada-header{
     display:flex;
@@ -57,12 +59,40 @@ body{
 
 .entrada-body{
     color:#ffffff;
+    justify-content: space-between;
+    align-items:center;
     font-family:Georgia, 'Times New Roman', Times, serif;
     font-size:20px;
-}
-.entrada-icon{
-    font-size: 35px;
-}
+
+    #btn-entrada{
+        background-color:#462050;
+        color:#eeeeee;
+        border-radius: 8px;
+        border-color: #462050;
+        padding: 8px 16px;
+        transition: background-color 0.5s ease;
+    }
+    #btn-entrada:hover{
+        background-color:#190c1d;
+    }
+    
+    #descricao-entrada,
+    #categoria-entrada,
+    #valor-entrada{
+        background-color:#050505;
+        color:#928f8f;
+        border-radius: 8px;
+        border-color: #0f0f0f;      
+    }    
+}   
+    #valor-entrada {
+    -moz-appearance: textfield;
+        &::-webkit-outer-spin-button,
+        &::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+        }
+    }
 
 .saida-header{
     display:flex;
@@ -77,17 +107,41 @@ body{
   color: #ffffff;
 }
 
-.saida-body{
-    font-size:20px;
+.saida-body{ 
     justify-content: space-between;
     align-items:center;
     color: #ffffff;
+    font-family:Georgia, 'Times New Roman', Times, serif;
+    font-size:20px;
+        #btn-saida{
+        background-color:#462050;
+        color:#eeeeee;
+        border-radius: 8px;
+        border-color: #462050;
+        padding: 8px 16px;
+        transition: background-color 0.5s ease;
+    }
+    #valor-saida {
+    -moz-appearance: textfield;
+        &::-webkit-outer-spin-button,
+        &::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+        }
+    }
+    #btn-saida:hover{
+        background-color:#190c1d;
+    }
+    
+    #descricao-saida,
+    #categoria-saida,
+    #valor-saida{
+        background-color:#050505;
+        color:#928f8f;
+        border-radius: 8px;
+        border-color: #0f0f0f;      
+    }  
 }
-
-.saida-icon{
-    font-size: 35px;
-}
-
 
 .previsao-header{
     display:flex;
@@ -107,10 +161,6 @@ body{
     justify-content: space-between;
     align-items:center;
     color: #9c9c9c;
-}
-
-.previsao-icon{
-  font-size:35px;
 }
 
 .transacoes {
@@ -143,7 +193,7 @@ body{
         }
 
         &.entrada {
-            color: #4ade80;
+            color: #3f945e;
         }
 
         &.saida {
@@ -152,7 +202,81 @@ body{
     }
 }
 
-.grafico-card {
-    max-width: 400px;
+
+.secao-grafico-assinaturas {
+    display: flex;
+    gap: 24px;
+    max-width: 1100px;
     margin: 0 auto;
+    padding: 24px;
+    justify-content: flex-end;
+}
+
+.grafico-card {
+    flex: 0 0 280px;
+    color: #ffffff;
+    padding: 24px;
+}
+
+.grafico-card canvas {
+    display: block;
+    width: 280px;
+    height: 280px;
+    margin-right: 170px;
+}
+
+.assinaturas-card {
+    color: #ffffff;
+    flex: 0 0 400px;
+    padding: 20px;
+}
+
+#lista-assinaturas {
+    list-style: none;
+    margin: 0 0 16px 0;
+    padding: 0;
+}
+
+#lista-assinaturas li {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    font-size: 14px;
+}
+
+.nova-assinatura {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: 24px;
+}
+
+#nome-assinatura,
+#valor-assinatura,
+#dia-assinatura {
+    background-color: #050505;
+    color: #928f8f;
+    border-radius: 8px;
+    border-color: #0f0f0f;
+    padding: 8px 16px;
+}
+
+#valor-assinatura,
+#dia-assinatura {
+       -moz-appearance: textfield;
+        &::-webkit-outer-spin-button,
+        &::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+        }
+    }
+
+.lancamentos {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 16px;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 24px;
 }
