@@ -280,3 +280,23 @@ body {
     margin: 0 auto;
     padding: 24px;
 }
+
+
+.btn-deletar {
+    background: none;
+    border: none;
+    color: rgba(255, 255, 255, 0.5);
+    cursor: pointer;
+    font-size: 18px;
+    padding: 0 8px;
+}
+
+.btn-deletar:hover {
+    color: #dc2626;
+}
+
+#lista-transacoes li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}

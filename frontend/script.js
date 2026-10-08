@@ -38,9 +38,23 @@ function atualizarGrafico() {
 function renderizarTransacao(transacao) {
     const item = document.createElement("li");
     const sinal = transacao.tipo === "entrada" ? "+" : "-";
-    item.textContent = transacao.descricao + ": " + sinal + " " + formatarMoeda(transacao.valor_centavos);
+
+    const texto = document.createElement("span");
+    texto.textContent = transacao.descricao + ": " + sinal + " " + formatarMoeda(transacao.valor_centavos);
+
+    const btnExcluir = document.createElement("button");
+    btnExcluir.textContent = "x";
+    btnExcluir.classList.add("btn-excluir");
+    btnExcluir.addEventListener("click", async function() {
+        await fetch(API_URL + "/transacoes/" + transacao.id,  {
+            method: "DELETE"
+        })
+        await carregarTransacoes();
+    });
+    item.appendChild(texto);
+    item.appendChild(btnExcluir);
     item.classList.add(transacao.tipo);
-    listaTransacoes.appendChild(item);
+    listaTransacoes.appendChild(item);  
 }
 
 async function carregarTransacoes() {
@@ -145,5 +159,57 @@ document.getElementById("btn-saida").addEventListener("click", async function() 
     inputDescricao.value = "";
 });
 
+document.getElementById("btn-assinatura").addEventListener("click", async function() {
+    const inputNome = document.getElementById("nome-assinatura");
+    const inputValor = document.getElementById("valor-assinatura");
+    const inputDia = document.getElementById("dia-assinatura");
+
+    const nome = inputNome.value.trim();
+    const valor = Number(inputValor.value);
+    const dia = Number(inputDia.value);
+
+    if(!nome || !valor || valor <= 0 || !dia || dia < 1 || dia > 31){
+        alert("Preencha todos os campos corretamente");
+        return;
+    }
+    
+    await fetch(API_URL + "/assinaturas", {
+        method: "POST",
+        headers: { "Content-Type": "application/json"},
+        body: JSON.stringify({
+            nome: nome,
+            valor_centavos: Math.round(valor * 100),
+            dia_vencimento: dia,
+            ativa: true,
+            categoria_id: null
+        })
+    });
+
+    inputNome.value = "";
+    inputValor.value = "";
+    inputDia.value = "";
+
+    await carregarAssinaturas();
+        });
+
+async function carregarAssinaturas(){
+    const resposta = await fetch (API_URL + "/assinaturas");
+    const assinaturas = await resposta.json();
+
+    const lista = document.getElementById("lista-assinaturas");
+    lista.innerHTML = "";
+
+    assinaturas.forEach(function(assinatura){
+        const item = document.createElement("li");
+        item.innerHTML = "<span>" + assinatura.nome + "</span><span>dia" + assinatura.dia_vencimento + " . " + formatarMoeda(assinatura.valor_centavos) + "</span>";
+        lista.appendChild(item);
+    })
+
+}
+
+
+
+
 carregarTransacoes();
 carregarCategorias();
+carregarAssinaturas();
