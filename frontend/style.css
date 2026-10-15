@@ -2,6 +2,7 @@ body {
     background: linear-gradient(270deg, #1d062c, #4f0883, #2b0640, #1d062c);
     background-size: 400% 400%;
     animation: gradienteAnimado 15s ease infinite;
+    margin:0;
 }
 
 @keyframes gradienteAnimado {
@@ -11,11 +12,9 @@ body {
 }
 .cards{
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(4, minmax(0, 1fr));
     gap: 16px;
-    max-width: 1100px;
-    margin: 0 auto;
-    padding: 24px;
+    padding: 0 0 24px;
 }
 
 .card{
@@ -164,9 +163,8 @@ body {
 }
 
 .transacoes {
-    max-width: 1100px;
     margin: 0 auto;
-    padding: 24px;
+    padding: 0;
     color: #ffffff;
 
     h3 {
@@ -206,28 +204,28 @@ body {
 .secao-grafico-assinaturas {
     display: flex;
     gap: 24px;
-    max-width: 1100px;
-    margin: 0 auto;
-    padding: 24px;
-    justify-content: flex-end;
+    align-items: space-between;
+    padding: 0 0 24px;
+    justify-content: space-between;
 }
 
 .grafico-card {
-    flex: 0 0 280px;
+    flex: 1 1 280px;
+    min-width: 0;
     color: #ffffff;
-    padding: 24px;
+    padding: 24px;  
 }
 
 .grafico-card canvas {
     display: block;
     width: 280px;
     height: 280px;
-    margin-right: 170px;
 }
 
 .assinaturas-card {
+    flex: 1 1 280px;
+    min-width: 0;
     color: #ffffff;
-    flex: 0 0 400px;
     padding: 20px;
 }
 
@@ -276,9 +274,7 @@ body {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 16px;
-    max-width: 1100px;
-    margin: 0 auto;
-    padding: 24px;
+    padding: 0 0 24px;
 }
 
 
@@ -299,4 +295,69 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
+}
+
+.layout{
+    display: flex;
+    min-height: 100vh;
+}
+
+.sidebar {
+    width: 250px;
+    min-height: 100vh;
+    
+    flex-shrink:0;
+    box-sizing:border-box;
+    border-radius: 0px 20px 20px 0px;
+
+    background-color: #2d043d;
+    color: #ffffff;
+    padding:30px 18px;
+}
+
+.main-content {
+    flex: 1;
+    min-width:0;
+    padding: 24px;
+    box-sizing:border-box;
+}
+
+.sidebar nav {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.sidebar nav a {
+    display: block;
+    padding: 12px;
+    border-radius: 8px;
+    color: #d8c9e0;
+    text-decoration: none;
+    transition: background-color 0.2s ease;
+}
+
+.sidebar nav a:hover {
+    background-color: #452052;
+    color: #ffffff;
+}
+
+.sidebar nav a.active {
+    background-color: #7136a0;
+    color: #ffffff;
+}
+
+.logo{
+    width: 100%;
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+.logo img{
+    display: block;
+    width: 100%;
+    max-width:200px;
+    height: auto;
+    margin: 0 auto;
+    border-radius:12px;
 }

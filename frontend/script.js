@@ -202,6 +202,18 @@ async function carregarAssinaturas(){
     assinaturas.forEach(function(assinatura){
         const item = document.createElement("li");
         item.innerHTML = "<span>" + assinatura.nome + "</span><span>dia" + assinatura.dia_vencimento + " . " + formatarMoeda(assinatura.valor_centavos) + "</span>";
+
+        const btnExcluir = document.createElement("button");
+        btnExcluir.textContent = "x";
+        btnExcluir.classList.add("btn-excluir");
+        btnExcluir.addEventListener("click", async function() {
+        await fetch(API_URL + "/assinaturas/" + assinatura.id,  {
+            method: "DELETE"
+        })  
+        await carregarAssinaturas();
+    });
+        lista.appendChild(texto);
+        lista.appendChild(btnExcluir);
         lista.appendChild(item);
     })
 
