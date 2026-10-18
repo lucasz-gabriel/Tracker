@@ -1,3 +1,7 @@
+/* ==========================
+   Página Inicial
+========================== */
+
 body {
     background: linear-gradient(270deg, #1d062c, #4f0883, #2b0640, #1d062c);
     background-size: 400% 400%;
@@ -360,4 +364,320 @@ body {
     height: auto;
     margin: 0 auto;
     border-radius:12px;
+}
+
+/* ==========================
+   PÁGINA SOBRE MIM
+========================== */
+
+.main-content>h1{
+    font-size:2rem;
+    margin-bottom: 28px;
+}
+
+.intro{
+    margin-bottom:35px;
+    padding:10px 0 25px;
+    max-width: 950px;
+}
+
+.intro h1{
+    color:#dac7ff;
+    font-size: clamp(2rem,4vw,3rem);
+    margin-bottom:12px;
+    line-height:1.2;
+}
+
+.intro h1 span{
+    color:#b794ff;
+    text-shadow:0 0 18px #5e108b;
+}
+
+.intro h3{
+    color:#c2b3e8;
+    font-size:1.05rem;
+    font-weight: 500;
+    margin-bottom:22px;
+}
+
+.intro p{
+    color:#d1cbe0;
+    font-size:1rem;
+    line-height:1.9;
+    max-width:850px;
+}
+
+.tecnologias,
+.Outros-projetos,
+.contato{
+    margin-bottom:28px;
+}
+
+.tecnologias h2,
+.Outros-projetos h2,
+.contato h2{
+    font-size:1.35;
+    margin-bottom:18px;
+    color:#f0eaff;
+}
+
+.tecnologias ul{
+    display: flex;
+    flex-wrap:wrap;
+    gap:12px;
+    padding:0;
+    margin:0;
+    life-style:none;
+}
+
+.tecnologias li{
+    padding:10px 17px;
+    border:1px solid #bd78ee;
+    border-radius:10px;
+    background:rgba(111, 66, 193, 0.13);
+    color:#e4d7ff;
+    list-style:none;
+    font-size:0.95rem;
+    transition:0.25s ease;
+}
+
+.tecnologias li i {
+    margin-right: 5px;
+    font-size: 15px;
+}
+
+/* Cores individuais dos ícones das tecnologias */
+.tecnologias li:nth-child(1) i {
+    color: #3776AB; /* Python */
+}
+
+.tecnologias li:nth-child(2) i {
+    color: #009688; /* FastAPI */
+}
+
+.tecnologias li:nth-child(3) i {
+    color: #E34F26; /* HTML */
+}
+
+.tecnologias li:nth-child(4) i {
+    color: #1572B6; /* CSS */
+}
+
+.tecnologias li:nth-child(5) i {
+    color: #F7DF1E; /* JavaScript */
+}
+
+.tecnologias li:nth-child(6) i {
+    color: #4479A1; /* SQLite */
+}
+
+.tecnologias li:nth-child(7) i {
+    color: #F05032; /* Git */
+}
+
+.tecnologias li:nth-child(8) i {
+    color: #FFFFFF; /* GitHub */
+}
+
+.tecnologia li:hover{
+    transform:translateY(-3px);
+    border-color:#a77bff;
+    background: rgba(111, 66, 193, 0.28);
+    box-shadow: 0 0 16px #1d062c
+}
+
+.card-projetos{
+    padding:22px;
+    border:1px  solid #c679fa38;
+    border-radius: 16px;
+    background: rgba(23, 17, 40, 0.45);
+    transition: 0.25s ease;
+}
+
+.card-projetos:hover {
+    border-color: rgba(177, 137, 255, 0.5);
+    box-shadow: 0 0 22px rgba(143, 92, 255, 0.1);
+}
+
+.card-projetos ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+}
+
+.card-projetos li a {
+    display: block;
+    padding: 13px 17px;
+    border-radius: 10px;
+    background: rgba(111, 66, 193, 0.15);
+    border: 1px solid rgba(177, 137, 255, 0.2);
+    color: #e4d7ff;
+    text-decoration: none;
+    transition: 0.25s ease;
+}
+
+.card-projetos li a:hover {
+    color: #ffffff;
+    background: rgba(111, 66, 193, 0.35);
+    border-color: #a77bff;
+    transform: translateY(-2px);
+}
+
+.card-projetos h3 {
+    margin-top: 20px;
+    color: #a99bbf;
+    font-size: 0.95rem;
+    font-weight: 400;
+}
+
+.card-contato{
+    padding: 10px 22px;
+    border: 1px solid rgba(198, 121, 250, 0.22);
+    border-radius: 16px;
+    background: rgba(23, 17, 40, 0.45);
+    transition: 0.25 ease;
+}
+
+.card-contato p{
+    display: block;
+    padding: 13px 17px;
+    border-radius: 10px;
+    color: #a99bbf;
+    text-decoration: none;
+}
+
+.card-contato:hover {
+    border-color: rgba(177, 137, 255, 0.5);
+    box-shadow: 0 0 22px rgba(143, 92, 255, 0.1);
+}
+
+.card-contato ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.card-contato a {
+    display: inline-block;
+    transition: transform 0.25s ease,
+                box-shadow 0.25s ease,
+                background-color 0.25s ease;
+}
+
+.card-contato a:hover {
+    transform: translateY(-4px);
+    background: rgba(111, 66, 193, 0.35);
+    box-shadow: 0 0 14px rgba(143, 92, 255, 0.25);
+}
+
+.contato {
+    padding-top: 5px;
+}
+
+.contato p {
+    display: inline-block;
+    margin: 0 10px 10px 0;
+}
+
+.contato a {
+    display: inline-block;
+    padding: 11px 18px;
+    border-radius: 10px;
+    color: #e4d7ff;
+    text-decoration: none;
+    border: 1px solid rgba(177, 137, 255, 0.3);
+    background: rgba(111, 66, 193, 0.13);
+    transition: 0.25s ease;
+}
+
+.contato a:hover {
+    color: white;
+    border-color: #a77bff;
+    background: rgba(111, 66, 193, 0.3);
+    box-shadow: 0 0 16px rgba(143, 92, 255, 0.15);
+}
+
+/* Responsividade */
+
+@media (max-width: 768px) {
+    .main-content > h1 {
+        font-size: 1.7rem;
+    }
+
+    .intro h1 {
+        font-size: 2rem;
+    }
+
+    .intro p {
+        font-size: 0.95rem;
+    }
+
+    .card-projetos {
+        padding: 16px;
+    }
+
+    .card-contato{
+        padding:16px;
+    }
+}
+
+.sobre-grid {
+    position:relative;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+    align-items: start;
+}
+
+.sobre-grid::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    width: 1px;
+    background: rgba(189, 120, 238, 0.3);
+}
+
+.coluna-direita {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+.tecnologias h2,
+.Outros-projetos h2,
+.contato h2 {
+    color: #f0eaff;
+}
+
+.tecnologias ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+@media (max-width: 768px) {
+    .sobre-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.card-contato a i {
+    font-size: 16px;
+    margin-right: 7px;
+    vertical-align: middle;
+}
+
+.card-contato a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
 }
