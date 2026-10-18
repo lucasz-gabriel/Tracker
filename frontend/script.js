@@ -13,10 +13,10 @@ const grafico = new Chart(ctx, {
     data: {
         labels: ["Entradas", "Saídas"],
         datasets: [{
-            data: [0, 0],
+            data: [0,0],
             backgroundColor: ["#22c55e", "#dc2626"],
             borderWidth: 0
-        }]
+        }]  
     },
     options: {
         responsive: false,
@@ -218,9 +218,6 @@ async function carregarAssinaturas(){
     })
 
 }
-
-
-
 
 carregarTransacoes();
 carregarCategorias();

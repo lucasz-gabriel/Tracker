@@ -3,7 +3,10 @@
 ========================== */
 
 body {
-    background: linear-gradient(270deg, #1d062c, #4f0883, #2b0640, #1d062c);
+    background: linear-gradient(270deg,   #090611,
+        #210735,
+        #12051f,
+        #090611);
     background-size: 400% 400%;
     animation: gradienteAnimado 15s ease infinite;
     margin:0;
@@ -22,11 +25,11 @@ body {
 }
 
 .card{
-   background-color: #3b0249;
+   background-color: rgba(12, 7, 20, 0.85);
     border-radius: 16px;
     padding: 24px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-    border: 1px solid #0f0f0f;
+    border: 1px solid rgba(167, 123, 255, 0.22);
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 }
 
@@ -39,13 +42,27 @@ body {
 .saldo-title{
     font-family:Georgia, 'Times New Roman', Times, serif;
     font-size: large;
-    color: #ffffff;
+    color: #dac7ff;
 }
 .saldo-value{
     font-size:30px;
     justify-content: space-between;
     align-items:center;
     color:rgb(158, 162, 167)
+}
+
+.entrada-value{
+    font-size:30px;
+    justify-content: space-between;
+    align-items:center;
+    color:rgb(10, 255, 10)
+}
+
+.saida-value{
+    font-size:30px;
+    justify-content: space-between;
+    align-items:center;
+    color:rgb(231, 13, 13)
 }
 
 .entrada-header{
@@ -56,11 +73,18 @@ body {
 }
 .entrada-title{
   font-family:Georgia, 'Times New Roman', Times, serif;
-  font-size: extra-large;
-  color: #ffffff;
+  font-size: 20px;
+  color: #dac7ff;
 }
 
+/* ==========================
+   Entrada de dados
+========================== */
+
 .entrada-body{
+    display:grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap:10px 15px;
     color:#ffffff;
     justify-content: space-between;
     align-items:center;
@@ -68,20 +92,32 @@ body {
     font-size:20px;
 
     #btn-entrada{
-        background-color:#462050;
-        color:#eeeeee;
-        border-radius: 8px;
-        border-color: #462050;
-        padding: 8px 16px;
-        transition: background-color 0.5s ease;
+    grid-column:1/-1;
+    width: 100%;
+    background-color: #462050;
+    color: #eee5ff;
+    border: 1px solid #7136a0;
+    border-radius: 8px;
+    padding: 10px;
+    cursor: pointer;
+    margin-top:20px;
+    transition: background-color 0.2s ease,
+                border-color 0.2s ease,
+                box-shadow 0.2s ease;
     }
     #btn-entrada:hover{
-        background-color:#190c1d;
+        background-color: #7136a0;
+        border-color: #b794ff;
+        box-shadow: 0 0 14px rgba(167, 123, 255, 0.25);
     }
-    
+
     #descricao-entrada,
     #categoria-entrada,
     #valor-entrada{
+        grid-row:2;
+        width: 100%;
+        min-width: 0;
+        box-sizing: border-box;
         background-color:#050505;
         color:#928f8f;
         border-radius: 8px;
@@ -97,6 +133,10 @@ body {
         }
     }
 
+/* ==========================
+   Saída de dados
+========================== */
+
 .saida-header{
     display:flex;
     justify-content: space-between;
@@ -106,24 +146,35 @@ body {
 
 .saida-title{
   font-family:Georgia, 'Times New Roman', Times, serif;
-  font-size: extra-large;
-  color: #ffffff;
+  font-size: 20px;
+  color: #dac7ff;
 }
 
 .saida-body{ 
+    display:grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap:10px 15px;
+    color:#ffffff;
     justify-content: space-between;
     align-items:center;
-    color: #ffffff;
     font-family:Georgia, 'Times New Roman', Times, serif;
     font-size:20px;
-        #btn-saida{
-        background-color:#462050;
-        color:#eeeeee;
-        border-radius: 8px;
-        border-color: #462050;
-        padding: 8px 16px;
-        transition: background-color 0.5s ease;
+
+    #btn-saida{
+    grid-column:1/-1;
+    width: 100%;
+    background-color: #462050;
+    color: #eee5ff;
+    border: 1px solid #7136a0;
+    border-radius: 8px;
+    padding: 10px;
+    cursor: pointer;
+    margin-top:20px;
+    transition: background-color 0.2s ease,
+                border-color 0.2s ease,
+                box-shadow 0.2s ease;
     }
+
     #valor-saida {
     -moz-appearance: textfield;
         &::-webkit-outer-spin-button,
@@ -133,18 +184,28 @@ body {
         }
     }
     #btn-saida:hover{
-        background-color:#190c1d;
+        background-color: #7136a0;
+        border-color: #b794ff;
+        box-shadow: 0 0 14px rgba(167, 123, 255, 0.25);
     }
     
     #descricao-saida,
     #categoria-saida,
     #valor-saida{
+        grid-row:2;
+        width: 100%;
+        min-width: 0;
+        box-sizing: border-box;
         background-color:#050505;
         color:#928f8f;
         border-radius: 8px;
-        border-color: #0f0f0f;      
+        border-color: #0f0f0f;       
     }  
 }
+
+/* ==========================
+    Previsão e lista de transações
+========================== */
 
 .previsao-header{
     display:flex;
@@ -156,7 +217,7 @@ body {
 .previsao-title{
   font-family:Georgia, 'Times New Roman', Times, serif;
   font-size: extra-large;
-  color: #ffffff;
+  color: #dac7ff;
 }
 
 .previsao-body{
@@ -204,32 +265,47 @@ body {
     }
 }
 
+/* ==========================
+   Assinaturas
+========================== */
 
 .secao-grafico-assinaturas {
     display: flex;
     gap: 24px;
-    align-items: space-between;
+    align-items: flex-start;
     padding: 0 0 24px;
     justify-content: space-between;
+    min-width: 0;
 }
 
 .grafico-card {
+    position: relative;
+    isolation: isolate;
     flex: 1 1 280px;
     min-width: 0;
+    box-sizing: border-box;
     color: #ffffff;
-    padding: 24px;  
+    padding: 24px;
+    margin-left: 250px;
+    overflow: visible;
 }
 
 .grafico-card canvas {
+    position:relative;
+    z-index:1;
     display: block;
     width: 280px;
     height: 280px;
 }
 
+.assinaturas-title{
+    font-size:20px;
+}
+
 .assinaturas-card {
     flex: 1 1 280px;
     min-width: 0;
-    color: #ffffff;
+    color: #dac7ff;
     padding: 20px;
 }
 
@@ -281,6 +357,24 @@ body {
     padding: 0 0 24px;
 }
 
+#btn-assinatura{
+    width: 100%;
+    background-color: #462050;
+    color: #eee5ff;
+    border: 1px solid #7136a0;
+    border-radius: 8px;
+    padding: 10px;
+    cursor: pointer;
+    transition: background-color 0.2s ease,
+                border-color 0.2s ease,
+                box-shadow 0.2s ease;
+}
+
+#btn-assinatura:hover {
+    background-color: #7136a0;
+    border-color: #b794ff;
+    box-shadow: 0 0 14px rgba(167, 123, 255, 0.25);
+}
 
 .btn-deletar {
     background: none;
@@ -306,6 +400,10 @@ body {
     min-height: 100vh;
 }
 
+/* ==========================
+   Sidebar
+========================== */
+
 .sidebar {
     width: 250px;
     min-height: 100vh;
@@ -314,12 +412,14 @@ body {
     box-sizing:border-box;
     border-radius: 0px 20px 20px 0px;
 
-    background-color: #2d043d;
+    background-color: #10051a;
     color: #ffffff;
     padding:30px 18px;
 }
 
 .main-content {
+    position:relative;
+    isolation:isolate;
     flex: 1;
     min-width:0;
     padding: 24px;
@@ -351,6 +451,10 @@ body {
     color: #ffffff;
 }
 
+/* ==========================
+   Logo
+========================== */
+
 .logo{
     width: 100%;
     margin-bottom: 30px;
@@ -364,6 +468,78 @@ body {
     height: auto;
     margin: 0 auto;
     border-radius:12px;
+}
+
+
+/* ==========================
+   Constelação - Estilo da página
+========================== */ 
+
+.constelacoes-clip{
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: -150px;
+    right: 0;
+    overflow: hidden;
+    pointer-events: none;
+    z-index: 0;
+}
+
+.constelacoes-ascii {
+    position: absolute;
+    inset: 0;
+    overflow: visible;
+    z-index: 0;
+}
+
+.constelacao {
+    position: absolute;
+    margin: 0;
+    color: rgba(177, 120, 255, 0.75);
+    font-family: monospace;
+    font-size: 22px;
+    line-height: 1.5;
+    font-weight: bold;
+    white-space: pre;
+
+       text-shadow:
+        0 0 8px rgba(137, 65, 255, 0.6),
+        0 0 18px rgba(137, 65, 255, 0.35);
+}
+
+
+/* Posições individuais */
+.c1 {
+    position:absolute;
+    top: 2%;
+    right: 80%;
+}
+
+.c2 {
+    top: 3%;
+    right: 2%;
+}
+
+.c3 {
+    bottom: 3%;
+    right: 80%;   
+}
+
+.c4 {
+    bottom: 3%;
+    right: 2%;
+}
+
+.c5 {
+    top: 42%;
+    right: 84%;
+}
+
+.grafico-card canvas {
+    position: relative;
+    overflow:visible;
+    z-index: 1;
 }
 
 /* ==========================
@@ -488,9 +664,9 @@ body {
 
 .card-projetos{
     padding:22px;
-    border:1px  solid #c679fa38;
+    border:1px  solid rgba(167,123,255,0.22);
     border-radius: 16px;
-    background: rgba(23, 17, 40, 0.45);
+    background: rgba(12, 7, 20, 0.85);
     transition: 0.25s ease;
 }
 
@@ -537,7 +713,7 @@ body {
     padding: 10px 22px;
     border: 1px solid rgba(198, 121, 250, 0.22);
     border-radius: 16px;
-    background: rgba(23, 17, 40, 0.45);
+    background: rgba(12, 7, 20, 0.85);
     transition: 0.25 ease;
 }
 
@@ -642,7 +818,7 @@ body {
     bottom: 0;
     left: 50%;
     width: 1px;
-    background: rgba(189, 120, 238, 0.3);
+    background: rgba(167, 123, 255, 0.22);
 }
 
 .coluna-direita {
@@ -680,4 +856,100 @@ body {
     align-items: center;
     justify-content: center;
     gap: 3px;
+}
+
+/*Design de espaço da tela SobreMim*/
+
+.ceu-espacial {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+    z-index: 0;
+}
+
+.decoracao-espacial {
+    position: absolute;
+    margin: 0;
+    color: rgba(173, 112, 255, 0.65);
+    font-family: monospace;
+    font-size: 13px;
+    line-height: 1.4;
+    white-space: pre;
+    text-shadow: 0 0 8px rgba(151, 75, 255, 0.4);
+    user-select: none;
+}
+
+.intro,
+.sobre-grid {
+    position: relative;
+    z-index: 1;
+}
+
+.estrelas-topo {
+    top: 15px;
+    right: 35px;
+}
+
+.estrela-grande {
+    top: 125px;
+    right: 115px;
+    color: rgba(190, 135, 255, 0.75);
+}
+
+.lua-montanha {
+    top: 350px;
+    right: 20px;
+    color: rgba(153, 87, 255, 0.5);
+}
+
+.estrelas-inferior {
+    bottom: 15px;
+    left: 25px;
+}
+
+.estrela-direita {
+    right: 40px;
+    bottom: 100px;
+}
+
+@media (max-width: 768px) {
+    .estrela-grande {
+        right: 5px;
+        top: 100px;
+        opacity: 0.5;
+    }
+
+    .lua-montanha {
+        right: -100px;
+        top: 400px;
+        opacity: 0.4;
+    }
+
+    .estrelas-superior {
+        right: 10px;
+    }
+
+    .estrela-direita {
+        display: none;
+    }
+}
+
+.montanhas-ascii {
+    position: static;
+    width: 100%;
+    margin-top: 100px;
+    padding-left: 10px;
+    box-sizing: border-box;
+    overflow: hidden;
+}
+
+.montanhas-ascii pre {
+    margin: 0;
+    color: rgba(157, 83, 255, 0.7);
+    font-family: monospace;
+    font-size: 20px;
+    line-height: 1.3;
+    white-space: pre;
+    text-shadow: 0 0 8px rgba(137, 65, 255, 0.4);
 }
