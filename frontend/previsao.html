@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Previsão</title>
     <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="previsao.js" defer></script> 
 </head>
 <body>
     <div class = "layout"> 
@@ -19,5 +21,81 @@
                 <a href="sobre.html">Sobre mim</a>
             </nav>
         </aside>
+        <main class="main-previsao">
+
+            <!-- Céu estrelado da página Previsão -->
+            <div class="ceu-estrelado">
+                <div class="constelacao constelacao-1">
+                    <span class="estrela s1">✦</span>
+                    <span class="estrela s2">✧</span>
+                    <span class="estrela s3">✦</span>
+                    <span class="estrela s4">✧</span>
+                    <span class="linha l1"></span>
+                    <span class="linha l2"></span>
+                    <span class="linha l3"></span>
+                </div>
+
+                <div class="constelacao constelacao-2">
+                    <span class="estrela s1">✧</span>
+                    <span class="estrela s2">✦</span>
+                    <span class="estrela s3">✧</span>
+                    <span class="estrela s4">✦</span>
+                    <span class="linha l1"></span>
+                    <span class="linha l2"></span>
+                    <span class="linha l3"></span>
+                </div>
+
+                <span class="estrela solta e1">✦</span>
+                <span class="estrela solta e2">✧</span>
+                <span class="estrela solta e3">·</span>
+                <span class="estrela solta e4">✦</span>
+                <span class="estrela solta e5">·</span>
+                <span class="estrela solta e6">✧</span>
+                <span class="estrela solta e7">✦</span>
+                <span class="estrela solta e8">·</span>
+            </div>
+
+            <div class="previsao-inicio">
+                <h1 class="previsao-titulo">Previsão Financeira</h1>
+                <h2 class="descricao">Entenda onde seu dinheiro está indo</h2>
+            </div>
+
+            <div class="card-previsao">
+                <div class="previsao-saldo">
+                    <span>Saldo projetado no fim do mês</span>
+                    <span class="saldo-previsao" id="prevsaldo">
+                        R$ 0,00
+                    </span>
+                </div>
+
+                <div class="previsao-entradas">
+                    <span>Entradas previstas</span>
+                    <span class="entrada-previsao" id="preventrada">
+                        R$0,00
+                    </span>
+                </div>
+                
+                <div class="previsao-saidas">
+                    <span>Saidas previstas</span>
+                    <span class="saida-previsao" id="prevsaida">
+                        R$0,00
+                    </span>
+                </div>
+            </div>
+
+            <div class="card-evolucao">
+                <h1 class="evolucao-titulo">Evolução de saldo</h1>
+                <canvas id="grafico-evolucao"></canvas>
+            </div>
+
+            <div class="card-gastos">
+                <h1>Previsão de gastos por categoria</h1>
+                <div class="grafico-gastos-container">
+                    <canvas id="grafico-gastos"></canvas>
+                </div>
+            </div>
+
+        </main>
+    </div>
 </body>
 </html>

@@ -212,8 +212,7 @@ async function carregarAssinaturas(){
         })  
         await carregarAssinaturas();
     });
-        lista.appendChild(texto);
-        lista.appendChild(btnExcluir);
+        item.appendChild(btnExcluir);
         lista.appendChild(item);
     })
 

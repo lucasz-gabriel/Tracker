@@ -953,3 +953,263 @@ body {
     white-space: pre;
     text-shadow: 0 0 8px rgba(137, 65, 255, 0.4);
 }
+
+/*Previsão*/
+
+.main-previsao{
+    flex:1;
+    min-width:0;
+    padding:35px;
+    color:#ffffff;
+    font-family:Georgia,'Times New Roman',Times,serif;
+}
+
+.previsao-inicio{
+    margin-bottom:30px;
+}
+
+.previsao-titulo{
+    font-size:32px;
+    margin-bottom:8px;
+}
+
+.descricao{
+    font-size:17px;
+    font-weight:normal;
+    color:#aaa0ba;
+    margin-top:0;
+}
+
+/*cards*/
+
+.card-previsao{
+    display:grid;
+    grid-template-columns: repeat(2,minmax(0,1fr));
+    gap:20px;
+
+    background: rgba(25,18,38,0.85);
+    border:1px solid #382647;
+    border-radius:16px;
+    padding:25px;
+    margin-bottom:25px;
+    box-shadow:0 8px 25px rgba(0,0,0,0.15);
+}
+
+.previsao-saldo{
+    grid-column:1/-1;
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+
+    padding-bottom:20px;
+    border-bottom:1px solid #382647;
+    color:#c9b8dc;
+    font-size:16px;
+}
+
+.saldo-previsao{
+    color:#d6b4ff;
+    font-size:32px;
+    font-weight: bold;
+}
+
+.previsao-entradas,
+.previsao-saidas{
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+    font-size: 15px;
+    color:#aaa0ba;
+}
+
+.entrada-previsao{
+    color:#62d6a0;
+    font-size:22px;
+    font-weight: bold;
+}
+
+.saida-previsao{
+    color:#ff8d9a;
+    font-size:22px;
+    font-weight: bold;
+}
+
+.card-evolucao,
+.card-gastos {
+    position: relative;
+    height: 400px;
+    background: rgba(25,18,38,0.85);
+    border: 1px solid #382647;
+    border-radius: 16px;
+    padding: 25px;
+    margin-bottom: 25px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+}
+
+.evolucao-titulo,
+.card-gastos h1 {
+    font-size: 21px;
+    margin-top: 0;
+    margin-bottom: 25px;
+}
+
+
+.evolucao-titulo,
+.card-gastos h1{
+    font-size:21px;
+    margin-top:0;
+    margin-bottom:25px;
+}
+
+.card-evolucao canvas{
+    display:block;
+    width:100% !important;
+    height:320px !important;
+    max-width: 1500px;
+    margin:0;
+}
+
+.grafico-gastos-container {
+    position: relative;
+    width: 100%;
+    height: 300px;
+}
+
+.grafico-gastos-container canvas {
+    display: block;
+    width: 100% !important;
+    height: 100% !important;
+}
+
+@media(max-width:768px){
+    .main-previsao{
+        padding:20px
+    }
+
+    .previsao-titulo{
+        font-size:26px;
+    }
+
+    .card-previsao,
+    .card-evolucao,
+    .card-gastos{
+        position:relative;
+        height:400px;   
+        padding:18px;
+        box-sizing:border-box;
+    }
+
+    .saldo-previsao{
+        font-size:27px;
+    }
+
+
+    .grafico-gastos-container {
+        display:block;
+        position: relative;
+        width: 100%;
+        height: 100%;
+    }
+
+}
+
+@media(max-width:480px){
+    .card-previsao{
+        grid-template-columns: 1fr;
+    }
+
+    .previsao-saldo{
+        grid-column:auto;
+    }
+}
+
+.ceu-estrelado {
+    position: fixed;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+    z-index: -1;
+}
+
+.constelacao {
+    position: absolute;
+    width: 150px;
+    height: 100px;
+    opacity: 0.65;
+}
+
+.constelacao-1 {
+    top: 25px;
+    left: 38%;
+}
+
+.constelacao-2 {
+    top: 55px;
+    right: 8%;
+    transform: scale(0.8) rotate(15deg);
+}
+
+.estrela {
+    position: absolute;
+    color: #d8b4fe;
+    text-shadow: 0 0 8px #a855f7;
+    animation: brilho 3s ease-in-out infinite alternate;
+}
+
+.s1 { top: 5px; left: 10px; }
+.s2 { top: 35px; left: 55px; }
+.s3 { top: 10px; left: 100px; }
+.s4 { top: 75px; left: 80px; }
+
+.linha {
+    position: absolute;
+    height: 1px;
+    background: linear-gradient(90deg, #a855f7, #d8b4fe);
+    transform-origin: left;
+    opacity: 0.5;
+}
+
+.constelacao .l1 {
+    top: 13px;
+    left: 17px;
+    width: 53px;
+    transform: rotate(32deg);
+}
+
+.constelacao .l2 {
+    top: 38px;
+    left: 62px;
+    width: 50px;
+    transform: rotate(-28deg);
+}
+
+.constelacao .l3 {
+    top: 20px;
+    left: 105px;
+    width: 70px;
+    transform: rotate(115deg);
+}
+
+.solta {
+    font-size: 12px;
+}
+
+.e1 { top: 8%; left: 15%; }
+.e2 { top: 18%; left: 55%; }
+.e3 { top: 12%; left: 75%; }
+.e4 { top: 28%; left: 92%; }
+.e5 { top: 40%; left: 8%; }
+.e6 { top: 58%; left: 95%; }
+.e7 { top: 78%; left: 18%; }
+.e8 { top: 88%; left: 68%; }
+
+@keyframes brilho {
+    from {
+        opacity: 0.35;
+        transform: scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1.15);
+    }
+}
