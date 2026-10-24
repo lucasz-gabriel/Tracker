@@ -8,20 +8,36 @@ let totalEntradas = 0;
 let totalSaidas = 0;
 
 const ctx = document.getElementById("grafico-rosca");
+
 const grafico = new Chart(ctx, {
     type: "doughnut",
     data: {
         labels: ["Entradas", "Saídas"],
         datasets: [{
-            data: [0,0],
+            data: [0, 0],
             backgroundColor: ["#22c55e", "#dc2626"],
             borderWidth: 0
-        }]  
+        }]
     },
     options: {
         responsive: false,
         plugins: {
-            legend: { labels: { color: "#ffffff" } } 
+            legend: {
+                labels: {
+                    color: "#ffffff"
+                }
+            },
+            tooltip: {
+                callbacks: {
+                    label: function(context) {
+                        return context.label + ": " +
+                            context.parsed.toLocaleString("pt-BR", {
+                                style: "currency",
+                                currency: "BRL"
+                            });
+                    }
+                }
+            }
         }
     }
 });
@@ -31,7 +47,7 @@ function formatarMoeda(valor) {
 }
 
 function atualizarGrafico() {
-    grafico.data.datasets[0].data = [totalEntradas, totalSaidas];
+    grafico.data.datasets[0].data = [totalEntradas/100, totalSaidas/100];
     grafico.update();
 }
 
@@ -106,16 +122,20 @@ async function carregarCategorias() {
     const selectEntrada = document.getElementById("categoria-entrada");
     const selectSaida = document.getElementById("categoria-saida");
 
-    categorias.forEach(function(categoria) {
-        const opcaoEntrada = document.createElement("option");
-        opcaoEntrada.value = categoria.id;
-        opcaoEntrada.textContent = categoria.nome;
-        selectEntrada.appendChild(opcaoEntrada);
+    selectEntrada.innerHTML='<option value="">Sem categoria </option>';
+    selectSaida.innerHTML='<option value="">Sem categoria </option>';
 
-        const opcaoSaida = document.createElement("option");
-        opcaoSaida.value = categoria.id;
-        opcaoSaida.textContent = categoria.nome;
-        selectSaida.appendChild(opcaoSaida);
+     categorias.forEach(function(categoria) {
+        const opcao = document.createElement("option");
+
+        opcao.value = categoria.id;
+        opcao.textContent = categoria.nome;
+
+        if (categoria.tipo === "entrada") {
+            selectEntrada.appendChild(opcao);
+        } else if (categoria.tipo === "saida") {
+            selectSaida.appendChild(opcao);
+        }
     });
 }
 
@@ -192,31 +212,52 @@ document.getElementById("btn-assinatura").addEventListener("click", async functi
     await carregarAssinaturas();
         });
 
-async function carregarAssinaturas(){
-    const resposta = await fetch (API_URL + "/assinaturas");
+
+async function carregarAssinaturas() {
+    const resposta = await fetch(API_URL + "/assinaturas");
     const assinaturas = await resposta.json();
 
     const lista = document.getElementById("lista-assinaturas");
     lista.innerHTML = "";
 
-    assinaturas.forEach(function(assinatura){
+    const assinaturasAtivas = assinaturas.filter(function(assinatura) {
+        return assinatura.ativa === true;
+    });
+
+    assinaturasAtivas.forEach(function(assinatura) {
         const item = document.createElement("li");
-        item.innerHTML = "<span>" + assinatura.nome + "</span><span>dia" + assinatura.dia_vencimento + " . " + formatarMoeda(assinatura.valor_centavos) + "</span>";
+
+        item.innerHTML =
+            "<span>" + assinatura.nome + "</span>" +
+            "<span>dia " + assinatura.dia_vencimento +
+            " · " + formatarMoeda(assinatura.valor_centavos) + "</span>";
 
         const btnExcluir = document.createElement("button");
         btnExcluir.textContent = "x";
         btnExcluir.classList.add("btn-excluir");
+
         btnExcluir.addEventListener("click", async function() {
-        await fetch(API_URL + "/assinaturas/" + assinatura.id,  {
-            method: "DELETE"
-        })  
-        await carregarAssinaturas();
-    });
+            try {
+                const resposta = await fetch(
+                    API_URL + "/assinaturas/" + assinatura.id,
+                    { method: "DELETE" }
+                );
+
+                if (!resposta.ok) {
+                    throw new Error("Não foi possível excluir a assinatura.");
+                }
+
+                await carregarAssinaturas();
+            } catch (erro) {
+                alert(erro.message);
+            }
+        });
+
         item.appendChild(btnExcluir);
         lista.appendChild(item);
-    })
-
+    });
 }
+
 
 carregarTransacoes();
 carregarCategorias();
