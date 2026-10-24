@@ -47,3 +47,20 @@ class Transacao(TransacaoBase):
 
     class Config:
         from_attributes = True
+
+class CobrancaBase(BaseModel):
+    assinatura_id:int
+    ano:int
+    mes:int
+    valor_centavos:int
+    status:str="pendente"
+    transacao_id:Optional[int]=None
+
+class CobrancaCreate(CobrancaBase):
+    pass
+
+class Cobranca(CobrancaBase):
+    id:int
+
+    class Config:
+        from_attributes = True 
