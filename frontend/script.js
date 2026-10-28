@@ -193,7 +193,7 @@ document.getElementById("btn-assinatura").addEventListener("click", async functi
         return;
     }
     
-    await fetch(API_URL + "/assinaturas", {
+    const resposta = await fetch(API_URL + "/assinaturas", {
         method: "POST",
         headers: { "Content-Type": "application/json"},
         body: JSON.stringify({
@@ -205,11 +205,27 @@ document.getElementById("btn-assinatura").addEventListener("click", async functi
         })
     });
 
+    if (!resposta.ok){
+        throw new error("Não foi possível cadastrar a assinatura")
+    }
+
+    const respostaCobrancas = await fetch(
+        API_URL + "/cobrancas/gerar-mensais",
+        {method:"POST"}
+    );
+
+    if (!respostaCobrancas.ok){
+        throw new Error(
+            "Assinatura cadastrada, mas não foi possível gerar cobranças."
+        );
+    }
+
     inputNome.value = "";
     inputValor.value = "";
     inputDia.value = "";
 
     await carregarAssinaturas();
+    await carregarCobrancas();
         });
 
 
@@ -258,7 +274,114 @@ async function carregarAssinaturas() {
     });
 }
 
+async function carregarCobrancas() {
+    const resposta = await fetch(API_URL + "/cobrancas");
+
+    if (!resposta.ok) {
+        throw new Error("Não foi possível carregar as cobranças.");
+    }
+
+    const cobrancas = await resposta.json();
+
+    const respostaAssinaturas = await fetch(API_URL + "/assinaturas");
+
+    if (!respostaAssinaturas.ok) {
+        throw new Error("Não foi possível carregar as assinaturas.");
+    }
+
+    const assinaturas = await respostaAssinaturas.json();
+
+    const lista = document.getElementById("lista-cobrancas");
+    lista.innerHTML = "";
+
+    const assinaturasAtivas = assinaturas.filter(function(assinatura) {
+    return assinatura.ativa === true;
+    });
+
+    const idsAssinaturasAtivas = new Set(
+        assinaturasAtivas.map(function(assinatura) {
+            return assinatura.id;
+        })
+    );
+
+    const pendentes = cobrancas.filter(function(cobranca) {
+        return (
+            cobranca.status === "pendente" &&
+            idsAssinaturasAtivas.has(cobranca.assinatura_id)
+        );
+    });
+
+    if (pendentes.length === 0) {
+        const item = document.createElement("li");
+        item.textContent = "Nenhuma cobrança pendente.";
+        lista.appendChild(item);
+        return;
+    }
+
+    pendentes.forEach(function(cobranca) {
+        const assinatura = assinaturas.find(function(item) {
+            return item.id === cobranca.assinatura_id;
+        });
+
+        const item = document.createElement("li");
+
+        const descricao = document.createElement("span");
+        descricao.textContent =
+            (assinatura ? assinatura.nome : "Assinatura") +
+            " · " +
+            String(cobranca.mes).padStart(2, "0") +
+            "/" + cobranca.ano +
+            " · " + formatarMoeda(cobranca.valor_centavos);
+
+        const btnPagar = document.createElement("button");
+        btnPagar.textContent = "Pagar";
+        btnPagar.classList.add("btn-pagar");
+
+        btnPagar.addEventListener("click", async function() {
+            if (!confirm(
+                "Confirmar pagamento desta cobrança de " +
+                formatarMoeda(cobranca.valor_centavos) + "?"
+            )) {
+                return;
+            }
+
+            btnPagar.disabled = true;
+
+            try {
+                const respostaPagamento = await fetch(
+                    API_URL + "/cobrancas/" + cobranca.id + "/pagar",
+                    { method: "POST" }
+                );
+
+                if (!respostaPagamento.ok) {
+                    const erro = await respostaPagamento.json().catch(
+                        () => ({})
+                    );
+
+                    throw new Error(
+                        erro.detail || "Não foi possível pagar a cobrança."
+                    );
+                }
+
+                await carregarTransacoes();
+                await carregarCobrancas();
+                await carregarAssinaturas();
+
+                alert("Cobrança paga com sucesso!");
+            } catch (erro) {
+                alert(erro.message);
+                btnPagar.disabled = false;
+            }
+        });
+
+        item.appendChild(descricao);
+        item.appendChild(btnPagar);
+        lista.appendChild(item);
+    });
+}
+
 
 carregarTransacoes();
 carregarCategorias();
 carregarAssinaturas();
+carregarCobrancas();

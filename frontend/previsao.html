@@ -62,7 +62,7 @@
 
             <div class="card-previsao">
                 <div class="previsao-saldo">
-                    <span>Saldo projetado no fim do mês</span>
+                    <span>Saldo projetado nos próximos 30 dias</span>
                     <span class="saldo-previsao" id="prevsaldo">
                         R$ 0,00
                     </span>
@@ -85,11 +85,21 @@
 
             <div class="card-evolucao">
                 <h1 class="evolucao-titulo">Evolução de saldo</h1>
-                <canvas id="grafico-evolucao"></canvas>
+                <div class="grafico-evolucao-conteiner">
+                    <canvas id="grafico-evolucao"></canvas>
+                </div>
             </div>
 
             <div class="card-gastos">
                 <h1>Previsão de gastos por categoria</h1>
+                <div id="mensagem-historico" class="mensagem-historico" hidden>
+                    <h2>Estamos conhecendo seus hábitos!</h2>
+                    <p>
+                        Ainda não temos histórico suficiente para estimar seus gastos
+                        com confiança. Continue registrando suas transações para
+                        desbloquear essa previsão.
+                    </p>
+                </div>
                 <div class="grafico-gastos-container">
                     <canvas id="grafico-gastos"></canvas>
                 </div>

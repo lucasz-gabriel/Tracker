@@ -65,44 +65,61 @@ def get_db():
     finally:
         db.close()
 
-def gerar_cobrancas_mensais(db:Session):
-    hoje=date.today()
-    assinaturas_ativas=db.query(models.Assinatura).filter(
-        models.Assinatura.ativa==True
+
+def gerar_cobrancas_mensais(db: Session):
+    hoje = date.today()
+
+    assinaturas_ativas = db.query(models.Assinatura).filter(
+        models.Assinatura.ativa.is_(True)
     ).all()
 
-    criadas=0
+    #Ver se tem duplicadas
+    cobrancas_existentes = db.query(
+        models.Cobranca.assinatura_id
+    ).filter(
+        models.Cobranca.ano == hoje.year,
+        models.Cobranca.mes == hoje.month
+    ).all()
+
+    ids_existentes = {
+        cobranca.assinatura_id
+        for cobranca in cobrancas_existentes
+    }
+
+    novas_cobrancas = []
+
+    for assinatura in assinaturas_ativas:
+        if assinatura.id in ids_existentes:
+            continue
+
+        nova = models.Cobranca(
+            assinatura_id=assinatura.id,
+            ano=hoje.year,
+            mes=hoje.month,
+            valor_centavos=assinatura.valor_centavos,
+            status="pendente",
+            transacao_id=None
+        )
+
+        novas_cobrancas.append(nova)
+
+        ids_existentes.add(assinatura.id)
+
+    if not novas_cobrancas:
+        return 0
 
     try:
-        for assinatura in assinaturas_ativas:
-            existente=db.query(models.Cobranca).filter(
-                models.Cobranca.assinatura_id==assinatura.id,
-                models.Cobranca.ano==hoje.year,
-                models.Cobranca.mes==hoje.month
-            ).first()
+        db.add_all(novas_cobrancas)
+        db.commit()
+        return len(novas_cobrancas)
 
-            if existente:
-                continue
+    except IntegrityError:
+        db.rollback()
+        raise HTTPException(
+            status_code=409,
+            detail="Uma ou mais cobranças já foram geradas."
+        )
 
-            cobranca=models.Cobranca(
-                assinatura_id=assinatura.id,
-                ano=hoje.year,
-                mes=hoje.month,
-                valor_centavos=assinatura.valor_centavos,
-                status="pendente",
-                transacao_id=None
-            )
-
-            db.add(cobranca)
-            criadas+=1
-
-            db.commit()
-
-    except Exception:
-            db.rollback()
-            raise
-
-    return criadas
 
 
 
