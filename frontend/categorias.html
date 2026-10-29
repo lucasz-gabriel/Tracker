@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Categorias</title>
+    <link rel="StyleSheet" href="style.css">
+</head>
+<body>
+    <div class="layout"> 
+        <aside class="sidebar"> 
+            <div class="logo">
+                <img src="img/tracker.png" alt="Logo Tracker">
+            </div>
+                
+            <nav>
+                <a href="index.html">Início</a>
+                <a href="previsao.html">Previsão</a>
+                <a href="sobre.html">Sobre mim</a>
+                <a href="categorias.html" class="active">Categorias</a>
+            </nav>
+        </aside>
+
+        <main class="conteudo-categorias">
+                <h1>Gerencie suas categorias!</h1>
+                <p>Organize as categorias das transações de entrada e saída.</p>
+
+                <div class="categoria-card">
+
+                    <div class="categoria-entrada">
+                        <label for="desc-catentrada">
+                            Nova categoria de entrada
+                        </label>
+
+                        <input type="text" id="desc-catentrada" placeholder="Salário, Freelancer etc.">
+
+                        <button id="btn-catentrada">
+                            Criar categoria
+                        </button>
+                    </div>
+
+                    <div class="categoria-saida">
+                        <label for="desc-catsaida">
+                            Nova categoria de saída
+                        </label>
+
+                        <input type="text" id="desc-catsaida" placeholder="Lazer, Mercado etc.">
+
+                        <button id="btn-catsaida">
+                            Criar categoria
+                        </button>
+                    </div>
+
+                </div>
+
+                <section class="categorias-lista">
+                    <h2>Categorias cadastradas</h2>
+
+                    <div id="lista-entradas">
+                        <h3>Categorias de entrada</h3>
+                    </div>
+
+                    <div id="lista-saidas">
+                        <h3>Categorias de saída</h3>
+                    </div>
+                </section>
+        </main>
+    </div>
+    <script src="categorias.js"></script>
+</body>
+</html>

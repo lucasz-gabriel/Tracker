@@ -181,36 +181,44 @@ def criar_assinatura(assinatura: schemas.AssinaturaCreate, db: Session = Depends
     return nova
 
 
-@app.delete("/assinaturas/{assinatura_id}")
-def deletar_assinatura(
-    assinatura_id: int,
+@app.delete("/categorias/{categoria_id}")
+def deletar_categoria(
+    categoria_id: int,
     db: Session = Depends(get_db)
 ):
-    assinatura = db.query(models.Assinatura).filter(
-        models.Assinatura.id == assinatura_id
+    categoria = db.query(models.Categoria).filter(
+        models.Categoria.id == categoria_id
     ).first()
 
-    if not assinatura:
+    if not categoria:
         raise HTTPException(
             status_code=404,
-            detail="Assinatura não encontrada"
+            detail="Categoria não encontrada"
         )
 
-    tem_cobrancas = db.query(models.Cobranca.id).filter(
-        models.Cobranca.assinatura_id == assinatura_id
-    ).first()
+    try:
+        db.query(models.Transacao).filter(
+            models.Transacao.categoria_id == categoria_id
+        ).update(
+            {models.Transacao.categoria_id: None},
+            synchronize_session=False
+        )
 
-    if tem_cobrancas:
-        assinatura.ativa = False
+        db.query(models.Assinatura).filter(
+            models.Assinatura.categoria_id == categoria_id
+        ).update(
+            {models.Assinatura.categoria_id: None},
+            synchronize_session=False
+        )
+
+        db.delete(categoria)
         db.commit()
-        return {
-            "mensagem": "Assinatura cancelada; histórico preservado"
-        }
 
-    db.delete(assinatura)
-    db.commit()
+        return {"mensagem": "Categoria deletada"}
 
-    return {"mensagem": "Assinatura deletada"}
+    except Exception:
+        db.rollback()
+        raise
 
 
 #Área das cobranças das assinaturas

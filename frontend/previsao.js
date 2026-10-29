@@ -268,19 +268,6 @@ function criarGraficoGastos(eventos, categorias) {
     const mensagem = document.getElementById("mensagem-historico");
     const containerGrafico = document.getElementById("container-grafico-gastos");
 
-    const historicoInsuficiente = true; // teste temporário
-
-    if (historicoInsuficiente) {
-        if (graficoGastos) {
-            graficoGastos.destroy();
-            graficoGastos = null;
-        }
-
-        mensagem.hidden = false;
-        containerGrafico.hidden = true;
-        return;
-    }
-
     mensagem.hidden = true;
     containerGrafico.hidden = false;
     
@@ -337,6 +324,12 @@ function criarGraficoGastos(eventos, categorias) {
             indexAxis: "y",
             responsive: true,
             maintainAspectRatio: false,
+            datasets: {
+        bar: {
+            barThickness: 55,
+            maxBarThickness: 55
+        }
+    },
             plugins: {
                 legend: { display: false },
                 tooltip: {
@@ -351,10 +344,14 @@ function criarGraficoGastos(eventos, categorias) {
             scales: {
                 x: {
                     beginAtZero: true,
+                    grace:"10%",
                     ticks: {
                         callback: valor =>
                             formatarMoeda(Math.round(valor * 100))
                     }
+                },
+                y:{
+                    beginAtZero:true
                 }
             }
         }
