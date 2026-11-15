@@ -121,13 +121,14 @@ async function carregarCategorias() {
 
     const selectEntrada = document.getElementById("categoria-entrada");
     const selectSaida = document.getElementById("categoria-saida");
+    const selectAssinatura = document.getElementById("categoria-assinatura");
 
-    selectEntrada.innerHTML='<option value="">Sem categoria </option>';
-    selectSaida.innerHTML='<option value="">Sem categoria </option>';
+    selectEntrada.innerHTML = '<option value="">Sem categoria</option>';
+    selectSaida.innerHTML = '<option value="">Sem categoria</option>';
+    selectAssinatura.innerHTML = '<option value="">Sem categoria</option>';
 
-     categorias.forEach(function(categoria) {
+    categorias.forEach(function(categoria) {
         const opcao = document.createElement("option");
-
         opcao.value = categoria.id;
         opcao.textContent = categoria.nome;
 
@@ -135,10 +136,10 @@ async function carregarCategorias() {
             selectEntrada.appendChild(opcao);
         } else if (categoria.tipo === "saida") {
             selectSaida.appendChild(opcao);
+            selectAssinatura.appendChild(opcao.cloneNode(true));
         }
     });
 }
-
 
 // Event listeners dos botões de entrada e saída
 document.getElementById("btn-entrada").addEventListener("click", async function() {
@@ -187,6 +188,7 @@ document.getElementById("btn-assinatura").addEventListener("click", async functi
     const nome = inputNome.value.trim();
     const valor = Number(inputValor.value);
     const dia = Number(inputDia.value);
+    
 
     if(!nome || !valor || valor <= 0 || !dia || dia < 1 || dia > 31){
         alert("Preencha todos os campos corretamente");

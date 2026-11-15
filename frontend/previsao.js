@@ -263,42 +263,76 @@ function criarGraficoEvolucao(saldoAtual, eventos, hoje, fimPeriodo) {
     });
 }
 
-function criarGraficoGastos(eventos, categorias) {
+const HISTORICO_MINIMO_DIAS = 7;
 
+function criarGraficoGastos(eventos, categorias, transacoes, cobrancas, hoje) {
     const mensagem = document.getElementById("mensagem-historico");
     const containerGrafico = document.getElementById("container-grafico-gastos");
+    const canvas = document.getElementById("grafico-gastos");
+
+    // Transações geradas por assinaturas não entram no histórico,
+    // porque as assinaturas futuras já são somadas à parte (evita contar duas vezes).
+    const idsDeAssinaturas = new Set(
+        cobrancas
+            .filter(cobranca => cobranca.transacao_id)
+            .map(cobranca => cobranca.transacao_id)
+    );
+
+    const historico = transacoes
+        .filter(t => t.tipo === "saida" && !idsDeAssinaturas.has(t.id))
+        .map(t => ({ ...t, data: converterData(t.data) }))
+        .filter(t => t.data <= hoje);
+
+    let diasHistorico = 0;
+    if (historico.length > 0) {
+        const primeira = Math.min(...historico.map(t => t.data.getTime()));
+        diasHistorico = Math.round((hoje.getTime() - primeira) / 86400000);
+    }
+
+    // Sem histórico suficiente: mostra a mensagem e esconde o gráfico
+    if (historico.length === 0 || diasHistorico < HISTORICO_MINIMO_DIAS) {
+        if (graficoGastos) {
+            graficoGastos.destroy();
+            graficoGastos = null;
+        }
+        mensagem.hidden = false;
+        containerGrafico.hidden = true;
+        return;
+    }
 
     mensagem.hidden = true;
     containerGrafico.hidden = false;
-    
-    const canvas = document.getElementById("grafico-gastos");
+
+    const nomeDaCategoria = id => {
+        const categoria = categorias.find(item => item.id === id);
+        return categoria ? categoria.nome : "Sem categoria";
+    };
+
     const gastosPorCategoria = new Map();
+    const somar = (nome, centavos) =>
+        gastosPorCategoria.set(nome, (gastosPorCategoria.get(nome) || 0) + centavos);
 
+    // 1) Estimativa pelos hábitos: média diária dos últimos dias, projetada para 30 dias
+    const janela = Math.min(Math.max(diasHistorico, 30), 90);
+    const inicioJanela = new Date(hoje);
+    inicioJanela.setDate(inicioJanela.getDate() - janela);
+
+    for (const t of historico) {
+        if (t.data > inicioJanela) {
+            somar(nomeDaCategoria(t.categoria_id), (t.valor_centavos / janela) * 30);
+        }
+    }
+
+    // 2) Gastos já agendados (assinaturas que ainda vão vencer)
     for (const evento of eventos) {
-        if (evento.tipo !== "saida") continue;
-
-        const categoria = categorias.find(
-            item => item.id === evento.categoria_id
-        );
-
-        const nome = categoria
-            ? categoria.nome
-            : "Sem categoria";
-
-        gastosPorCategoria.set(
-            nome,
-            (gastosPorCategoria.get(nome) || 0) +
-                evento.valor_centavos
-        );
+        if (evento.tipo === "saida") {
+            somar(nomeDaCategoria(evento.categoria_id), evento.valor_centavos);
+        }
     }
 
-    let labels = [...gastosPorCategoria.keys()];
-    let valores = [...gastosPorCategoria.values()];
-
-    if (labels.length === 0) {
-        labels = ["Nenhum gasto previsto"];
-        valores = [0];
-    }
+    const ordenado = [...gastosPorCategoria.entries()].sort((a, b) => b[1] - a[1]);
+    const labels = ordenado.map(([nome]) => nome);
+    const valores = ordenado.map(([, centavos]) => Math.round(centavos) / 100);
 
     if (graficoGastos) graficoGastos.destroy();
 
@@ -308,51 +342,37 @@ function criarGraficoGastos(eventos, categorias) {
             labels,
             datasets: [{
                 label: "Gastos previstos",
-                data: valores.map(valor => valor / 100),
+                data: valores,
                 backgroundColor: [
-                    "#a855f7",
-                    "#9333ea",
-                    "#7e22ce",
-                    "#c084fc",
-                    "#6b21a8",
-                    "#d8b4fe"
+                    "#a855f7", "#9333ea", "#7e22ce",
+                    "#c084fc", "#6b21a8", "#d8b4fe"
                 ],
-                borderRadius: 6
+                borderRadius: 6,
+                maxBarThickness: 55
             }]
         },
         options: {
             indexAxis: "y",
             responsive: true,
             maintainAspectRatio: false,
-            datasets: {
-        bar: {
-            barThickness: 55,
-            maxBarThickness: 55
-        }
-    },
             plugins: {
                 legend: { display: false },
                 tooltip: {
                     callbacks: {
                         label: contexto =>
-                            ` ${formatarMoeda(
-                                Math.round(contexto.parsed.x * 100)
-                            )}`
+                            ` ${formatarMoeda(Math.round(contexto.parsed.x * 100))}`
                     }
                 }
             },
             scales: {
                 x: {
                     beginAtZero: true,
-                    grace:"10%",
+                    grace: "10%",
                     ticks: {
-                        callback: valor =>
-                            formatarMoeda(Math.round(valor * 100))
+                        callback: valor => formatarMoeda(Math.round(valor * 100))
                     }
                 },
-                y:{
-                    beginAtZero:true
-                }
+                y: { beginAtZero: true }
             }
         }
     });
@@ -425,7 +445,7 @@ async function carregarPrevisao() {
             fimPeriodo
         );
 
-        criarGraficoGastos(eventos, categorias);
+        criarGraficoGastos(eventos, categorias, transacoes, cobrancas, hoje);
 
     } catch (erro) {
         console.error("Erro ao carregar previsão financeira:", erro);

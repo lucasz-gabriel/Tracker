@@ -159,29 +159,6 @@ def criar_categoria(categoria: schemas.CategoriaCreate, db: Session = Depends(ge
     return nova
 
 @app.delete("/categorias/{categoria_id}")
-def deletar_categoria(categoria_id: int, db: Session = Depends(get_db)):
-    categoria = db.query(models.Categoria).filter(models.Categoria.id == categoria_id).first()
-    if not categoria:
-        raise HTTPException(status_code=404, detail="Categoria não encontrada")
-    db.delete(categoria)
-    db.commit()
-    return {"mensagem": "Categoria deletada"}
-
-#Área das Assinaturas
-@app.get("/assinaturas", response_model=list[schemas.Assinatura])
-def listar_assinaturas(db: Session = Depends(get_db)):
-    return db.query(models.Assinatura).all()
-
-@app.post("/assinaturas", response_model=schemas.Assinatura)
-def criar_assinatura(assinatura: schemas.AssinaturaCreate, db: Session = Depends(get_db)):
-    nova = models.Assinatura(**assinatura.model_dump())
-    db.add(nova)
-    db.commit()
-    db.refresh(nova)
-    return nova
-
-
-@app.delete("/categorias/{categoria_id}")
 def deletar_categoria(
     categoria_id: int,
     db: Session = Depends(get_db)
@@ -219,6 +196,41 @@ def deletar_categoria(
     except Exception:
         db.rollback()
         raise
+
+
+#Área das Assinaturas
+@app.get("/assinaturas", response_model=list[schemas.Assinatura])
+def listar_assinaturas(db: Session = Depends(get_db)):
+    return db.query(models.Assinatura).all()
+
+@app.post("/assinaturas", response_model=schemas.Assinatura)
+def criar_assinatura(assinatura: schemas.AssinaturaCreate, db: Session = Depends(get_db)):
+    nova = models.Assinatura(**assinatura.model_dump())
+    db.add(nova)
+    db.commit()
+    db.refresh(nova)
+    return nova
+
+@app.delete("/assinaturas/{assinatura_id}")
+def deletar_assinatura(assinatura_id: int, db: Session = Depends(get_db)):
+    assinatura = db.query(models.Assinatura).filter(
+        models.Assinatura.id == assinatura_id
+    ).first()
+
+    if not assinatura:
+        raise HTTPException(status_code=404, detail="Assinatura não encontrada")
+
+    assinatura.ativa = False
+
+    # Remove cobranças pendentes, para não aparecerem pra confirmar
+    db.query(models.Cobranca).filter(
+        models.Cobranca.assinatura_id == assinatura_id,
+        models.Cobranca.status == "pendente"
+    ).delete(synchronize_session=False)
+
+    db.commit()
+    return {"mensagem": "Assinatura cancelada"}
+
 
 
 #Área das cobranças das assinaturas
@@ -288,7 +300,6 @@ def criar_cobranca(
         )
 
     return nova
-
 
 @app.post("/cobrancas/{cobranca_id}/pagar", response_model=schemas.Cobranca)
 def pagar_cobranca(
