@@ -332,12 +332,18 @@ body {
 
 #nome-assinatura,
 #valor-assinatura,
-#dia-assinatura {
+#dia-assinatura,
+#categoria-assinatura{
     background-color: #050505;
-    color: #928f8f;
+    color: #928f8f !important;
     border-radius: 8px;
     border-color: #0f0f0f;
     padding: 8px 16px;
+}
+
+#categoria-assinatura option {
+    background-color: #050505;
+    color: #928f8f;
 }
 
 #valor-assinatura,
@@ -349,6 +355,10 @@ body {
         margin: 0;
         }
     }
+
+#categoria-assinatura{
+    color:#050505;
+}
 
 .lancamentos {
     display: grid;
@@ -538,87 +548,97 @@ body {
    Logo
 ========================== */
 
-.logo{
-    width: 100%;
-    margin-bottom: 30px;
-    text-align: center;
+.logo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    padding: 24px 0;
 }
 
-.logo img{
-    display: block;
-    width: 100%;
-    max-width:200px;
-    height: auto;
-    margin: 0 auto;
-    border-radius:12px;
+.lua {
+    width: 90px;
+    height: 90px;
+    color: #c4b5fd;
+    filter: drop-shadow(0 0 8px rgba(167, 139, 250, 0.6));
+    cursor: pointer;
+    transition: transform 0.4s ease, filter 0.4s ease;
+}
+
+.lua:hover {
+    transform: rotate(-15deg) scale(1.1);
+    filter: drop-shadow(0 0 18px rgba(196, 181, 253, 0.95));
+}
+
+.logo-nome {
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    font-size: 14px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: #ffffff;
 }
 
 
 /* ==========================
-   Constelação - Estilo da página
+   Constelação das páginas
 ========================== */ 
 
-.constelacoes-clip{
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: -150px;
-    right: 0;
+.ceu-inicio 
+.ceu-categorias
+{
+    position: fixed;
+    inset: 0;
     overflow: hidden;
     pointer-events: none;
     z-index: 0;
 }
 
-.constelacoes-ascii {
+.cst {
     position: absolute;
-    inset: 0;
-    overflow: visible;
-    z-index: 0;
 }
 
-.constelacao {
+.cst-1 { top: 5%;     right: 6%; width: 150px; height: 80px; }
+.cst-2 { top: 48%;    right: 3%; width: 110px; height: 95px; }
+.cst-3 { bottom: 6%;  left: 20%; width: 140px; height: 95px; }
+
+.cst-cat-1 { top: 10%;    right: 5%;  width: 130px; height: 130px; }
+.cst-cat-2 { bottom: 8%;  left: 26%;  width: 170px; height: 110px; }
+.cst-cat-3 { top: 58%;    right: 14%; width: 70px;  height: 45px; }
+
+.st {
     position: absolute;
-    margin: 0;
-    color: rgba(177, 120, 255, 0.75);
-    font-family: monospace;
-    font-size: 22px;
-    line-height: 1.5;
-    font-weight: bold;
-    white-space: pre;
-
-       text-shadow:
-        0 0 8px rgba(137, 65, 255, 0.6),
-        0 0 18px rgba(137, 65, 255, 0.35);
+    transform: translate(-50%, -50%);
+    font-size: 16px;
+    line-height: 1;
+    color: #c4b5fd;
+    text-shadow: 0 0 8px rgba(196, 181, 253, 0.8);
+    opacity: 0.5;
+    user-select: none;
+    animation: cintilar 4s ease-in-out infinite;
 }
 
-
-/* Posições individuais */
-.c1 {
-    position:absolute;
-    top: 2%;
-    right: 80%;
+.st.solta {
+    transform: none;
+    font-size: 14px;
 }
 
-.c2 {
-    top: 3%;
-    right: 2%;
+.ln {
+    position: absolute;
+    height: 1px;
+    transform-origin: 0 50%;
+    background: linear-gradient(90deg, rgba(167, 139, 250, 0.55), rgba(167, 139, 250, 0.15));
 }
 
-.c3 {
-    bottom: 3%;
-    right: 80%;   
+@keyframes cintilar {
+    0%, 100% { opacity: 0.25; }
+    50%      { opacity: 0.9; }
 }
 
-.c4 {
-    bottom: 3%;
-    right: 2%;
+.main-content
+.conteudo-categorias {
+    position: relative;
+    z-index: 1;
 }
-
-.c5 {
-    top: 42%;
-    right: 84%;
-}
-
 .grafico-card canvas {
     position: relative;
     overflow:visible;
@@ -888,7 +908,7 @@ body {
 }
 
 .categoria-entrada,
-.categoria-saida {
+.categoria-saida{
     display: flex;
     flex-direction: column;
     gap: 14px;
