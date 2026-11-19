@@ -1,84 +1,389 @@
-let saldo = 1000;
-let totalEntradas = 0;
-let totalSaidas = 0;
+const API_URL = "http://127.0.0.1:8000";
 
 const saldoTexto = document.getElementById("saldo");
 const previsaoTexto = document.getElementById("previsao");
 const listaTransacoes = document.getElementById("lista-transacoes");
 
+let totalEntradas = 0;
+let totalSaidas = 0;
+
 const ctx = document.getElementById("grafico-rosca");
+
 const grafico = new Chart(ctx, {
     type: "doughnut",
     data: {
         labels: ["Entradas", "Saídas"],
         datasets: [{
-            data: [totalEntradas, totalSaidas],
-            backgroundColor: ["#4ade80", "#f87171"],
+            data: [0, 0],
+            backgroundColor: ["#22c55e", "#dc2626"],
             borderWidth: 0
         }]
     },
     options: {
+        responsive: false,
         plugins: {
             legend: {
-                labels: { color: "#ffffff" }
+                labels: {
+                    color: "#ffffff"
+                }
+            },
+            tooltip: {
+                callbacks: {
+                    label: function(context) {
+                        return context.label + ": " +
+                            context.parsed.toLocaleString("pt-BR", {
+                                style: "currency",
+                                currency: "BRL"
+                            });
+                    }
+                }
             }
         }
     }
 });
 
+function formatarMoeda(valor) {
+    return "R$ " + (valor / 100).toFixed(2).replace(".", ",");
+}
+
 function atualizarGrafico() {
-    grafico.data.datasets[0].data = [totalEntradas, totalSaidas];
+    grafico.data.datasets[0].data = [totalEntradas/100, totalSaidas/100];
     grafico.update();
 }
 
-function formatarMoeda(valor) {
-    return "R$ " + valor.toFixed(2).replace(".", ",");
+function renderizarTransacao(transacao) {
+    const item = document.createElement("li");
+    const sinal = transacao.tipo === "entrada" ? "+" : "-";
+
+    const texto = document.createElement("span");
+    texto.textContent = transacao.descricao + ": " + sinal + " " + formatarMoeda(transacao.valor_centavos);
+
+    const btnExcluir = document.createElement("button");
+    btnExcluir.textContent = "x";
+    btnExcluir.classList.add("btn-excluir");
+    btnExcluir.addEventListener("click", async function() {
+        await fetch(API_URL + "/transacoes/" + transacao.id,  {
+            method: "DELETE"
+        })
+        await carregarTransacoes();
+    });
+    item.appendChild(texto);
+    item.appendChild(btnExcluir);
+    item.classList.add(transacao.tipo);
+    listaTransacoes.appendChild(item);  
 }
 
-function atualizarTela() {
+async function carregarTransacoes() {
+    const resposta = await fetch(API_URL + "/transacoes");
+    const transacoes = await resposta.json();
+
+    listaTransacoes.innerHTML = "";
+    totalEntradas = 0;
+    totalSaidas = 0;
+
+    transacoes.forEach(function(transacao) {
+        renderizarTransacao(transacao);
+        if (transacao.tipo === "entrada") {
+            totalEntradas += transacao.valor_centavos;
+        } else {
+            totalSaidas += transacao.valor_centavos;
+        }
+    });
+
+    const saldo = totalEntradas - totalSaidas;
     saldoTexto.textContent = formatarMoeda(saldo);
     previsaoTexto.textContent = formatarMoeda(saldo);
+    atualizarGrafico();
+
+    document.getElementById("total-entradas").textContent = formatarMoeda(totalEntradas);
+    document.getElementById("total-saidas").textContent = formatarMoeda(totalSaidas);
 }
 
-function adicionarTransacao(descricao, valor, tipo) {
-    const item = document.createElement("li");
-    const sinal = tipo === "entrada" ? "+" : "-";
-    item.textContent = descricao + ": " + sinal + " " + formatarMoeda(Math.abs(valor));
-    item.classList.add(tipo); 
-    listaTransacoes.prepend(item);
+async function criarTransacao(descricao, valorCentavos, tipo, categoriaID) {
+    await fetch(API_URL + "/transacoes", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+            descricao: descricao,
+            valor_centavos: valorCentavos,
+            tipo: tipo,
+            data: new Date().toISOString().split("T")[0],
+            categoria_id: categoriaID || null
+        })
+    });
+
+    await carregarTransacoes();
 }
 
-document.getElementById("btn-entrada").addEventListener("click", function() {
+async function carregarCategorias() {
+    const resposta = await fetch(API_URL + "/categorias");
+    const categorias = await resposta.json();
+
+    const selectEntrada = document.getElementById("categoria-entrada");
+    const selectSaida = document.getElementById("categoria-saida");
+    const selectAssinatura = document.getElementById("categoria-assinatura");
+
+    selectEntrada.innerHTML = '<option value="">Sem categoria</option>';
+    selectSaida.innerHTML = '<option value="">Sem categoria</option>';
+    selectAssinatura.innerHTML = '<option value="">Sem categoria</option>';
+
+    categorias.forEach(function(categoria) {
+        const opcao = document.createElement("option");
+        opcao.value = categoria.id;
+        opcao.textContent = categoria.nome;
+
+        if (categoria.tipo === "entrada") {
+            selectEntrada.appendChild(opcao);
+        } else if (categoria.tipo === "saida") {
+            selectSaida.appendChild(opcao);
+            selectAssinatura.appendChild(opcao.cloneNode(true));
+        }
+    });
+}
+
+// Event listeners dos botões de entrada e saída
+document.getElementById("btn-entrada").addEventListener("click", async function() {
+    const inputDescricao = document.getElementById("descricao-entrada");
     const input = document.getElementById("valor-entrada");
-    const valor = Number(input.value);
+    const categoriaID = document.getElementById("categoria-entrada").value;
+
+    const valor = Number(input.value); 
+    const descricao = inputDescricao.value.trim() || "Entrada";
 
     if (!valor || valor <= 0) {
         alert("Digite um valor válido");
         return;
     }
 
-    saldo += valor;
-    totalEntradas += valor;
-    atualizarGrafico()
-    adicionarTransacao("Entrada", valor, "entrada");
-    atualizarTela();
+    const valorCentavos = Math.round(valor * 100);
+    await criarTransacao(descricao, valorCentavos, "entrada", categoriaID);
     input.value = "";
+    inputDescricao.value = "";
 });
 
-document.getElementById("btn-saida").addEventListener("click", function() {
+document.getElementById("btn-saida").addEventListener("click", async function() {
+    const inputDescricao = document.getElementById("descricao-saida");
     const input = document.getElementById("valor-saida");
+    const categoriaID = document.getElementById("categoria-saida").value;
+
     const valor = Number(input.value);
+    const descricao = inputDescricao.value.trim() || "Saída";
 
     if (!valor || valor <= 0) {
         alert("Digite um valor válido");
         return;
     }
 
-    saldo -= valor;
-    totalSaidas += valor;
-    atualizarGrafico()
-    adicionarTransacao("Saída", valor, "saida");
-    atualizarTela();
+    const valorCentavos = Math.round(valor * 100);
+    await criarTransacao(descricao, valorCentavos, "saida", categoriaID);
     input.value = "";
+    inputDescricao.value = "";
 });
 
+document.getElementById("btn-assinatura").addEventListener("click", async function() {
+    const inputNome = document.getElementById("nome-assinatura");
+    const inputValor = document.getElementById("valor-assinatura");
+    const inputDia = document.getElementById("dia-assinatura");
+
+    const nome = inputNome.value.trim();
+    const valor = Number(inputValor.value);
+    const dia = Number(inputDia.value);
+    
+
+    if(!nome || !valor || valor <= 0 || !dia || dia < 1 || dia > 31){
+        alert("Preencha todos os campos corretamente");
+        return;
+    }
+    
+    const resposta = await fetch(API_URL + "/assinaturas", {
+        method: "POST",
+        headers: { "Content-Type": "application/json"},
+        body: JSON.stringify({
+            nome: nome,
+            valor_centavos: Math.round(valor * 100),
+            dia_vencimento: dia,
+            ativa: true,
+            categoria_id: null
+        })
+    });
+
+    if (!resposta.ok){
+        throw new error("Não foi possível cadastrar a assinatura")
+    }
+
+    const respostaCobrancas = await fetch(
+        API_URL + "/cobrancas/gerar-mensais",
+        {method:"POST"}
+    );
+
+    if (!respostaCobrancas.ok){
+        throw new Error(
+            "Assinatura cadastrada, mas não foi possível gerar cobranças."
+        );
+    }
+
+    inputNome.value = "";
+    inputValor.value = "";
+    inputDia.value = "";
+
+    await carregarAssinaturas();
+    await carregarCobrancas();
+        });
+
+
+async function carregarAssinaturas() {
+    const resposta = await fetch(API_URL + "/assinaturas");
+    const assinaturas = await resposta.json();
+
+    const lista = document.getElementById("lista-assinaturas");
+    lista.innerHTML = "";
+
+    const assinaturasAtivas = assinaturas.filter(function(assinatura) {
+        return assinatura.ativa === true;
+    });
+
+    assinaturasAtivas.forEach(function(assinatura) {
+        const item = document.createElement("li");
+
+        item.innerHTML =
+            "<span>" + assinatura.nome + "</span>" +
+            "<span>dia " + assinatura.dia_vencimento +
+            " · " + formatarMoeda(assinatura.valor_centavos) + "</span>";
+
+        const btnExcluir = document.createElement("button");
+        btnExcluir.textContent = "x";
+        btnExcluir.classList.add("btn-excluir");
+
+        btnExcluir.addEventListener("click", async function() {
+            try {
+                const resposta = await fetch(
+                    API_URL + "/assinaturas/" + assinatura.id,
+                    { method: "DELETE" }
+                );
+
+                if (!resposta.ok) {
+                    throw new Error("Não foi possível excluir a assinatura.");
+                }
+
+                await carregarAssinaturas();
+            } catch (erro) {
+                alert(erro.message);
+            }
+        });
+
+        item.appendChild(btnExcluir);
+        lista.appendChild(item);
+    });
+}
+
+async function carregarCobrancas() {
+    const resposta = await fetch(API_URL + "/cobrancas");
+
+    if (!resposta.ok) {
+        throw new Error("Não foi possível carregar as cobranças.");
+    }
+
+    const cobrancas = await resposta.json();
+
+    const respostaAssinaturas = await fetch(API_URL + "/assinaturas");
+
+    if (!respostaAssinaturas.ok) {
+        throw new Error("Não foi possível carregar as assinaturas.");
+    }
+
+    const assinaturas = await respostaAssinaturas.json();
+
+    const lista = document.getElementById("lista-cobrancas");
+    lista.innerHTML = "";
+
+    const assinaturasAtivas = assinaturas.filter(function(assinatura) {
+    return assinatura.ativa === true;
+    });
+
+    const idsAssinaturasAtivas = new Set(
+        assinaturasAtivas.map(function(assinatura) {
+            return assinatura.id;
+        })
+    );
+
+    const pendentes = cobrancas.filter(function(cobranca) {
+        return (
+            cobranca.status === "pendente" &&
+            idsAssinaturasAtivas.has(cobranca.assinatura_id)
+        );
+    });
+
+    if (pendentes.length === 0) {
+        const item = document.createElement("li");
+        item.textContent = "Nenhuma cobrança pendente.";
+        lista.appendChild(item);
+        return;
+    }
+
+    pendentes.forEach(function(cobranca) {
+        const assinatura = assinaturas.find(function(item) {
+            return item.id === cobranca.assinatura_id;
+        });
+
+        const item = document.createElement("li");
+
+        const descricao = document.createElement("span");
+        descricao.textContent =
+            (assinatura ? assinatura.nome : "Assinatura") +
+            " · " +
+            String(cobranca.mes).padStart(2, "0") +
+            "/" + cobranca.ano +
+            " · " + formatarMoeda(cobranca.valor_centavos);
+
+        const btnPagar = document.createElement("button");
+        btnPagar.textContent = "Pagar";
+        btnPagar.classList.add("btn-pagar");
+
+        btnPagar.addEventListener("click", async function() {
+            if (!confirm(
+                "Confirmar pagamento desta cobrança de " +
+                formatarMoeda(cobranca.valor_centavos) + "?"
+            )) {
+                return;
+            }
+
+            btnPagar.disabled = true;
+
+            try {
+                const respostaPagamento = await fetch(
+                    API_URL + "/cobrancas/" + cobranca.id + "/pagar",
+                    { method: "POST" }
+                );
+
+                if (!respostaPagamento.ok) {
+                    const erro = await respostaPagamento.json().catch(
+                        () => ({})
+                    );
+
+                    throw new Error(
+                        erro.detail || "Não foi possível pagar a cobrança."
+                    );
+                }
+
+                await carregarTransacoes();
+                await carregarCobrancas();
+                await carregarAssinaturas();
+
+                alert("Cobrança paga com sucesso!");
+            } catch (erro) {
+                alert(erro.message);
+                btnPagar.disabled = false;
+            }
+        });
+
+        item.appendChild(descricao);
+        item.appendChild(btnPagar);
+        lista.appendChild(item);
+    });
+}
+
+
+carregarTransacoes();
+carregarCategorias();
+carregarAssinaturas();
+carregarCobrancas();

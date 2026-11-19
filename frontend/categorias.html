@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Categorias</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+</head>
+<body>
+
+<div class="ceu-categorias" aria-hidden="true">
+
+    <div class="cst cst-cat-1">
+        <span class="ln" style="left:10px;top:10px;width:58px;transform:rotate(64deg)"></span>
+        <span class="ln" style="left:90px;top:15px;width:57px;transform:rotate(105deg)"></span>
+        <span class="ln" style="left:35px;top:62px;width:20px;transform:rotate(11deg)"></span>
+        <span class="ln" style="left:55px;top:66px;width:20px;transform:rotate(11deg)"></span>
+        <span class="ln" style="left:35px;top:62px;width:61px;transform:rotate(109deg)"></span>
+        <span class="ln" style="left:75px;top:70px;width:49px;transform:rotate(66deg)"></span>
+        <span class="st" style="left:10px;top:10px">✺</span>
+        <span class="st" style="left:90px;top:15px;animation-delay:1s">✹</span>
+        <span class="st" style="left:35px;top:62px;animation-delay:2s">✦</span>
+        <span class="st" style="left:55px;top:66px;animation-delay:.6s">✦</span>
+        <span class="st" style="left:75px;top:70px;animation-delay:1.8s">✦</span>
+        <span class="st" style="left:15px;top:120px;animation-delay:3s">✧</span>
+        <span class="st" style="left:95px;top:115px;animation-delay:2.4s">✺</span>
+    </div>
+
+    <div class="cst cst-cat-2">
+        <span class="ln" style="left:0;top:10px;width:29px;transform:rotate(31deg)"></span>
+        <span class="ln" style="left:25px;top:25px;width:28px;transform:rotate(45deg)"></span>
+        <span class="ln" style="left:45px;top:45px;width:34px;transform:rotate(63deg)"></span>
+        <span class="ln" style="left:60px;top:75px;width:32px;transform:rotate(39deg)"></span>
+        <span class="ln" style="left:85px;top:95px;width:30px;transform:rotate(-9deg)"></span>
+        <span class="ln" style="left:115px;top:90px;width:32px;transform:rotate(-39deg)"></span>
+        <span class="ln" style="left:140px;top:70px;width:27px;transform:rotate(-68deg)"></span>
+        <span class="st" style="left:0;top:10px">✧</span>
+        <span class="st" style="left:25px;top:25px;animation-delay:.8s">✦</span>
+        <span class="st" style="left:45px;top:45px;animation-delay:1.6s">✹</span>
+        <span class="st" style="left:60px;top:75px;animation-delay:2.4s">✦</span>
+        <span class="st" style="left:85px;top:95px;animation-delay:3.2s">✧</span>
+        <span class="st" style="left:115px;top:90px;animation-delay:1s">✦</span>
+        <span class="st" style="left:140px;top:70px;animation-delay:2s">✦</span>
+        <span class="st" style="left:150px;top:45px;animation-delay:3.6s">✺</span>
+    </div>
+
+    <div class="cst cst-cat-3">
+        <span class="st" style="left:10px;top:10px;font-size:13px">✦</span>
+        <span class="st" style="left:28px;top:6px;animation-delay:.7s;font-size:11px">✧</span>
+        <span class="st" style="left:45px;top:14px;animation-delay:1.4s;font-size:15px">✹</span>
+        <span class="st" style="left:20px;top:26px;animation-delay:2.1s;font-size:11px">✧</span>
+        <span class="st" style="left:38px;top:30px;animation-delay:2.8s;font-size:13px">✦</span>
+        <span class="st" style="left:55px;top:28px;animation-delay:3.5s;font-size:10px">⋆</span>
+    </div>
+
+    <span class="st solta" style="top:9%;left:26%">✧</span>
+    <span class="st solta" style="top:34%;left:52%;animation-delay:1.5s">✦</span>
+    <span class="st solta" style="top:48%;left:14%;animation-delay:2.5s">·</span>
+    <span class="st solta" style="top:72%;right:20%;animation-delay:.5s">✺</span>
+    <span class="st solta" style="bottom:22%;left:46%;animation-delay:3.5s">⋆</span>
+    <span class="st solta" style="top:18%;right:30%;animation-delay:4.5s">✧</span>
+    <span class="st solta" style="bottom:7%;right:42%;animation-delay:2s">·</span>
+</div>
+
+    <div class="layout"> 
+        <aside class="sidebar"> 
+        <div class="logo">
+            <svg class="lua" viewBox="0 0 100 100" role="img" aria-label="Tracker">
+                <defs>
+                    <mask id="recorte-lua">
+                        <rect width="100" height="100" fill="white"/>
+                        <circle cx="62" cy="40" r="32" fill="black"/>
+                    </mask>
+                </defs>
+                <circle cx="48" cy="52" r="36" fill="currentColor" mask="url(#recorte-lua)"/>
+            </svg>
+            <span class="logo-nome">Tracker</span>
+        </div>
+                
+            <nav>
+                <a href="index.html">Início</a>
+                <a href="previsao.html">Previsão</a>
+                <a href="categorias.html">Categorias</a>
+                <a href="sobre.html">Sobre mim</a>
+            </nav>
+        </aside>
+
+        <main class="conteudo-categorias">
+                <h1>Gerencie suas categorias!</h1>
+                <p>Organize as categorias das transações de entrada e saída.</p>
+
+                <div class="categoria-card">
+
+                    <div class="categoria-entrada">
+                        <label for="desc-catentrada">
+                            Nova categoria de entrada
+                        </label>
+
+                        <input type="text" id="desc-catentrada" placeholder="Salário, Freelancer etc.">
+
+                        <button id="btn-catentrada">
+                            Criar categoria
+                        </button>
+                    </div>
+
+                    <div class="categoria-saida">
+                        <label for="desc-catsaida">
+                            Nova categoria de saída
+                        </label>
+
+                        <input type="text" id="desc-catsaida" placeholder="Lazer, Mercado etc.">
+
+                        <button id="btn-catsaida">
+                            Criar categoria
+                        </button>
+                    </div>
+
+                </div>
+
+                <section class="categorias-lista">
+                    <h2>Categorias cadastradas</h2>
+
+                    <div id="lista-entradas">
+                        <h3>Categorias de entrada</h3>
+                    </div>
+
+                    <div id="lista-saidas">
+                        <h3>Categorias de saída</h3>
+                    </div>
+                </section>
+        </main>
+    </div>
+    <script src="categorias.js"></script>
+</body>
+</html>
